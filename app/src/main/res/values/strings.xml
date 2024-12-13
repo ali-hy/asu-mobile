@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ECommerceApp</string>
+    <string name="e_commerce_app">E-Commerce App</string>
+    <string name="e_books">E-Books</string>
+    <string name="online_courses">Online Courses</string>
+    <string name="software_licenses">Software Licenses</string>
+    <string name="gift_cards">Gift Cards</string>
+    <string name="this_section_will_display_all_the_available_gift_cards">This section will display all the available gift cards.</string>
+    <string name="gift_cards_section">Gift Cards Section</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+</resources>

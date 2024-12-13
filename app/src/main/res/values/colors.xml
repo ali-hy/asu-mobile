@@ -1,0 +1,25 @@
+<resources>
+    <!-- Primary App Colors -->
+    <color name="green_500">#1ed760</color>
+    <color name="green_700">#149543</color>
+
+    <!-- Neutral Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#808080</color>
+    <color name="light_gray">#D3D3D3</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#e2e2e2</color>
+    <color name="text_secondary">#d6d6d6</color>
+
+    <!-- Error Colors -->
+    <color name="error">#B00020</color>
+
+    <!-- Background Colors -->
+    <color name="background_light">#F5F5F5</color>
+    <color name="background_dark">#121212</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_color">#FF5722</color>
+</resources>
