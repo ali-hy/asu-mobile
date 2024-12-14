@@ -18,8 +18,13 @@ android {
 
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        development {
+            debuggable true
         }
     }
     compileOptions {
@@ -35,6 +40,9 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.room.runtime
     implementation libs.jbcrypt
+    implementation libs.rxandroid
+    implementation libs.rxjava
+    implementation libs.room.rxjava3
     annotationProcessor libs.room.compiler
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit

@@ -1,7 +1,6 @@
 package com.dmm.ecommerceapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +9,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dmm.ecommerceapp.db.DatabaseHelper;
+import com.dmm.ecommerceapp.models.User;
 import com.dmm.ecommerceapp.services.UserService;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,18 +45,31 @@ public class LoginActivity extends AppCompatActivity {
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (userService.validateUser(email, password) != null) {
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    userService.attemptLogin(email, password,
+                            new DisposableMaybeObserver<User>() {
+                                @Override
+                                public void onSuccess(@NonNull User user) {
+                                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                        userService.login(email, password);
+                                    // Navigate to Main Categories Screen
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
 
-                        // Navigate to Main Categories Screen
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    }
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+                                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                                }
+                            }, () -> {
+                                Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                                return null;
+                            });
                 }
             }
         });

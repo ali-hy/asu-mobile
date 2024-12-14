@@ -9,15 +9,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dmm.ecommerceapp.db.DatabaseHelper;
+import com.dmm.ecommerceapp.models.User;
+import com.dmm.ecommerceapp.services.UserService;
+
+import io.reactivex.rxjava3.core.MaybeObserver;
+import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     private EditText etForgotEmail, etSecurityAnswer, etNewPassword;
     private TextView tvSecurityQuestion;
     private Button btnSubmitEmail, btnResetPassword;
-
-    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnSubmitEmail = findViewById(R.id.btnSubmitEmail);
         btnResetPassword = findViewById(R.id.btnResetPassword);
 
-        dbHelper = new DatabaseHelper(this);
+        UserService userService = UserService.getInstance(this);
 
         btnSubmitEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,16 +42,38 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                 if (email.isEmpty()) {
                     Toast.makeText(ForgotPasswordActivity.this, "Email is required", Toast.LENGTH_SHORT).show();
-                } else if (!dbHelper.checkEmailExists(email)) {
-                    Toast.makeText(ForgotPasswordActivity.this, "Email not found!", Toast.LENGTH_SHORT).show();
-                } else {
-                    String securityQuestion = dbHelper.getSecurityQuestion(email);
-                    tvSecurityQuestion.setText(securityQuestion);
-                    tvSecurityQuestion.setVisibility(View.VISIBLE);
-                    etSecurityAnswer.setVisibility(View.VISIBLE);
-                    etNewPassword.setVisibility(View.VISIBLE);
-                    btnResetPassword.setVisibility(View.VISIBLE);
+                    return;
                 }
+
+                // Subscribe to the Single returned by userService.getUserByEmail(email)
+                MaybeObserver<User> sub = userService.getUserByEmail(email)
+                        .subscribeWith(new DisposableMaybeObserver<User>() {
+                            @Override
+                            public void onSuccess(User user) {
+                                // Handle the user object when successfully retrieved
+                                if (user == null) {
+                                    Toast.makeText(ForgotPasswordActivity.this, "Email not found!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    String securityQuestion = user.getSecurityQuestion();
+                                    tvSecurityQuestion.setText(securityQuestion);
+                                    tvSecurityQuestion.setVisibility(View.VISIBLE);
+                                    etSecurityAnswer.setVisibility(View.VISIBLE);
+                                    etNewPassword.setVisibility(View.VISIBLE);
+                                    btnResetPassword.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                // Handle any error that occurred during the network call
+                                Toast.makeText(ForgotPasswordActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
             }
         });
 
@@ -62,13 +86,35 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                 if (securityAnswer.isEmpty() || newPassword.isEmpty()) {
                     Toast.makeText(ForgotPasswordActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
-                } else if (!dbHelper.validateSecurityAnswer(email, securityAnswer)) {
-                    Toast.makeText(ForgotPasswordActivity.this, "Invalid security answer!", Toast.LENGTH_SHORT).show();
-                } else {
-                    dbHelper.updatePassword(email, newPassword);
-                    Toast.makeText(ForgotPasswordActivity.this, "Password reset successful!", Toast.LENGTH_SHORT).show();
-                    finish(); // Close ForgotPasswordActivity
                 }
+
+                MaybeObserver<Boolean> sub = userService.validateSecurityAnswer(email, securityAnswer).subscribeWith(
+                        new DisposableMaybeObserver<Boolean>() {
+                            @Override
+                            public void onSuccess(Boolean isValid) {
+                                if (!isValid) {
+                                    Toast.makeText(ForgotPasswordActivity.this, "Invalid security answer!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    userService.updatePassword(email, newPassword, e -> {
+                                        Toast.makeText(ForgotPasswordActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        return null;
+                                    });
+                                    Toast.makeText(ForgotPasswordActivity.this, "Password reset successful!", Toast.LENGTH_SHORT).show();
+                                    finish(); // Close ForgotPasswordActivity
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(ForgotPasswordActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        }
+                );
             }
         });
     }

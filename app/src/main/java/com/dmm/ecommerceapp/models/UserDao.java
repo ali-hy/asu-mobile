@@ -8,19 +8,23 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface UserDao {
     @Query("SELECT * FROM user_table WHERE email = :email")
-    User getUserByEmail(String email);
+    Maybe<User> getUserByEmail(String email);
 
     @Insert
-    public boolean insert(User user);
+    public Completable insert(User user);
 
     @Update
-    public void update(User user);
+    public Completable update(User user);
 
     @Delete
-    void delete(User user);
+    Completable delete(User user);
 
     @Query("SELECT * FROM user_table")
     List<User> getAllUsers();
