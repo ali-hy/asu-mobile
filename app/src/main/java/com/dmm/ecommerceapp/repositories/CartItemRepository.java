@@ -17,6 +17,7 @@ public class CartItemRepository {
     private final LiveData<List<CartItem>> allCartItems;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
+    // Constructor accepts Application
     public CartItemRepository(Application application) {
         EcommerceDatabase database = EcommerceDatabase.getInstance(application);
         cartItemDao = database.cartItemDao();
@@ -37,5 +38,9 @@ public class CartItemRepository {
 
     public void delete(CartItem cartItem) {
         executorService.execute(() -> cartItemDao.delete(cartItem));
+    }
+
+    public void clearCart() {
+        executorService.execute(() -> cartItemDao.deleteAllCartItems());
     }
 }

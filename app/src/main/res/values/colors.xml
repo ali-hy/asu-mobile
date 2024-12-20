@@ -23,4 +23,6 @@
 
     <!-- Accent Colors -->
     <color name="accent_color">#FF5722</color>
+
+    <color name="primary">#6200EE</color>
 </resources>
