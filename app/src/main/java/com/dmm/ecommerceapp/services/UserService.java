@@ -30,7 +30,7 @@ public class UserService {
 
     public static UserService getInstance(Context context) {
         if (instance == null) {
-            instance =  new UserService(context);
+            instance = new UserService(context);
         }
 
         instance.dbClient = DbClient.getInstance(context);
