@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/admin_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin Dashboard"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Add/Edit/Delete Products -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/add_product_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Product" />
+
+            <Button
+                android:id="@+id/edit_product_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Product"
+                android:layout_marginStart="16dp" />
+
+            <Button
+                android:id="@+id/delete_product_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete Product"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <!-- Add/Edit/Delete Categories -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/add_category_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Category" />
+
+            <Button
+                android:id="@+id/edit_category_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Category"
+                android:layout_marginStart="16dp" />
+
+            <Button
+                android:id="@+id/delete_category_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete Category"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <!-- Stock Management -->
+        <TextView
+            android:id="@+id/stock_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Stock"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/product_stock_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Enter Product ID"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/update_stock_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update Stock"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Reports Section -->
+        <TextView
+            android:id="@+id/report_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate Reports"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/report_date_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Enter Date (YYYY-MM-DD)"
+                android:inputType="date" />
+
+            <Button
+                android:id="@+id/generate_report_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Generate Report"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Feedback and Ratings -->
+        <TextView
+            android:id="@+id/feedback_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Customer Feedback & Ratings"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/view_feedback_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Feedback & Ratings"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Best Selling Products Chart -->
+        <TextView
+            android:id="@+id/chart_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Best Selling Products Chart"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/view_chart_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Best Selling Products Chart" />
+
+    </LinearLayout>
+</ScrollView>
