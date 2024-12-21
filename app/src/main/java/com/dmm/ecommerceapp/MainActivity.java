@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.activities.CartActivity;
+import com.dmm.ecommerceapp.activities.ProductActivity;
 import com.dmm.ecommerceapp.services.UserService;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnEbooks).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, EbooksActivity.class));
+                startActivity(new Intent(MainActivity.this, ProductActivity.class));
             }
         });
 

@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(SignUpActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -74,6 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             @Override
                                             public void onError(@NonNull Throwable e) {
                                                 Toast.makeText(SignUpActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
+                                                System.out.println(e.getMessage());
                                             }
 
                                             @Override

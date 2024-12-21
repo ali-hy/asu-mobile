@@ -23,7 +23,7 @@
         <activity android:name=".ForgotPasswordActivity" android:exported="false" />
         <activity android:name=".MainActivity" android:exported="false" />
 
-        <activity android:name=".EbooksActivity" android:exported="false" />
+        <activity android:name=".activities.ProductActivity" />
         <activity android:name=".CoursesActivity" android:exported="false" />
         <activity android:name=".LicensesActivity" android:exported="false" />
         <activity android:name=".GiftCardsActivity" android:exported="false" />

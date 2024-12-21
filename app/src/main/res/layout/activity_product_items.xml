@@ -82,6 +82,8 @@
             android:orientation="horizontal"
             android:layout_marginTop="8dp">
 
+
+
             <!-- Decrease Button -->
             <Button
                 android:id="@+id/quantity_decrease"
@@ -114,6 +116,8 @@
                 android:textSize="20sp"
                 android:backgroundTint="@android:color/holo_green_dark"
                 android:textColor="@android:color/white" />
+
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
