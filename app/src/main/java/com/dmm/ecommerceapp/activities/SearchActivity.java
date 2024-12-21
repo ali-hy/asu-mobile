@@ -1,4 +1,4 @@
-package com.dmm.ecommerceapp.activities;
+/*package com.dmm.ecommerceapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -143,5 +143,5 @@ public class SearchActivity extends AppCompatActivity {
         allProducts.add(new Product("Laptop"));
         allProducts.add(new Product("Camera"));
     }*/
-}
+//}
 
