@@ -51,13 +51,11 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onSuccess(@NonNull User user) {
                                     Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                                    try { // Navigate to Main Categories Screen
+                                     // Navigate to Main Categories Screen
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();
-                                    } catch (Throwable e) {
-                                        System.out.println("lmao bitch");
-                                    }
+
                                 }
 
                                 @Override
