@@ -1,4 +1,4 @@
-package com.dmm.ecommerceapp.models;
+package com.dmm.ecommerceapp.data;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -6,11 +6,12 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.dmm.ecommerceapp.models.User;
+
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface UserDao {
