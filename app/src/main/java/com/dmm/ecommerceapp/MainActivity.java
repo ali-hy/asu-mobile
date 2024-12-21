@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        userService = UserService.getInstance(this);
+        userService = UserService.getInstance(this);
 
         // Check if the user is logged in (e.g., shared preferences or session variable)
         if (!isLoggedIn()) {
@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isLoggedIn() {
-//        return userService.isLoggedIn();
-        return true;
+        return userService.isLoggedIn();
+//        return true;
     }
 
 }

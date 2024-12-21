@@ -9,8 +9,9 @@ import androidx.room.RoomDatabase;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.Sales;
+import com.dmm.ecommerceapp.models.User;
 
-@Database(entities = {Product.class, CartItem.class, Sales.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Product.class, CartItem.class, Sales.class}, version = 2, exportSchema = false)
 public abstract class EcommerceDatabase extends RoomDatabase {
     private static volatile EcommerceDatabase INSTANCE;
 
@@ -24,6 +25,7 @@ public abstract class EcommerceDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     EcommerceDatabase.class, "ecommerce_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

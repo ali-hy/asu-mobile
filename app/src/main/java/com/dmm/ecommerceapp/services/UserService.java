@@ -15,9 +15,6 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.MaybeObserver;
-import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.core.MaybeObserver;
-import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -28,15 +25,15 @@ public class UserService {
     User currentUser;
 
     UserService(Context context) {
-        dbClient = new DbClient(context);
+        dbClient = DbClient.getInstance(context);
     }
 
     public static UserService getInstance(Context context) {
         if (instance == null) {
-            return new UserService(context);
+            instance =  new UserService(context);
         }
 
-        instance.dbClient = new DbClient(context);
+        instance.dbClient = DbClient.getInstance(context);
         return instance;
     }
 
