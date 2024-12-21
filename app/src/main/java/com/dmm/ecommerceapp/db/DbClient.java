@@ -3,11 +3,9 @@ package com.dmm.ecommerceapp.db;
 import android.content.Context;
 import androidx.room.Room;
 
-import com.dmm.ecommerceapp.models.User;
-import com.dmm.ecommerceapp.models.UserDao;
+import com.dmm.ecommerceapp.data.UserDao;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 public class DbClient {
 
@@ -16,8 +14,8 @@ public class DbClient {
     private final AppDb appDatabase;
 
     private DbClient(Context context) {
-        this.context = new WeakReference<>(context);
-        appDatabase = Room.databaseBuilder(context, AppDb.class, "app_db").build();
+        this.context = new WeakReference<>(context.getApplicationContext());
+        appDatabase = Room.databaseBuilder(context.getApplicationContext(), AppDb.class, "app_db").build();
     }
 
     public static DbClient getInstance(Context context) {
@@ -25,7 +23,7 @@ public class DbClient {
             instance = new DbClient(context);
         }
 
-        instance.context = new WeakReference<>(context);
+
         return instance;
     }
 

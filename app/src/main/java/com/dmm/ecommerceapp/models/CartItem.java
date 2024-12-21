@@ -10,6 +10,7 @@ public class CartItem {
     private long productId;
     private int quantity;
     private double totalPrice;
+    private String productName; // Add this field
 
     // Getters and Setters
     public long getId() {
@@ -42,5 +43,13 @@ public class CartItem {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getProductName() {
+        return productName; // Getter for productName
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName; // Setter for productName
     }
 }

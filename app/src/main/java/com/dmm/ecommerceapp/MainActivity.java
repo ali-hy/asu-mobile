@@ -1,17 +1,25 @@
 package com.dmm.ecommerceapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dmm.ecommerceapp.services.UserService;
+
 public class MainActivity extends AppCompatActivity {
+    UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        userService = UserService.getInstance(this);
+//
+//        if (userService == null) {
+//            System.out.println("UserService is null");
+//        }
 
         // Check if the user is logged in (e.g., shared preferences or session variable)
         if (!isLoggedIn()) {
@@ -52,7 +60,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isLoggedIn() {
-        SharedPreferences preferences = getSharedPreferences("user_session", MODE_PRIVATE);
-        return preferences.getBoolean("is_logged_in", false);
+//        if (userService != null) {
+//            return userService.isLoggedIn();
+//        } else {
+            return true;
+//        }
     }
 }
