@@ -28,7 +28,7 @@ public class UserService {
     User currentUser;
 
     UserService(Context context) {
-        dbClient = DbClient.getInstance(context);
+        dbClient = new DbClient(context);
     }
 
     public static UserService getInstance(Context context) {
@@ -36,7 +36,7 @@ public class UserService {
             return new UserService(context);
         }
 
-        instance.dbClient = DbClient.getInstance(context);
+        instance.dbClient = new DbClient(context);
         return instance;
     }
 

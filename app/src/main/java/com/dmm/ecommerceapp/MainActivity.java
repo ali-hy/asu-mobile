@@ -17,10 +17,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //        userService = UserService.getInstance(this);
-//
-//        if (userService == null) {
-//            System.out.println("UserService is null");
-//        }
 
         // Check if the user is logged in (e.g., shared preferences or session variable)
         if (!isLoggedIn()) {
@@ -61,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isLoggedIn() {
-//        if (userService != null) {
-//            return userService.isLoggedIn();
-//        } else {
-            return true;
-//        }
+//        return userService.isLoggedIn();
+        return true;
     }
+
 }

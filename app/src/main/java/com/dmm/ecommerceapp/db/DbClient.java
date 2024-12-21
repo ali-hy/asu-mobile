@@ -13,18 +13,9 @@ public class DbClient {
     private WeakReference<Context> context;
     private final AppDb appDatabase;
 
-    private DbClient(Context context) {
+    public DbClient(Context context) {
         this.context = new WeakReference<>(context.getApplicationContext());
         appDatabase = Room.databaseBuilder(context.getApplicationContext(), AppDb.class, "app_db").build();
-    }
-
-    public static DbClient getInstance(Context context) {
-        if (instance == null) {
-            instance = new DbClient(context);
-        }
-
-
-        return instance;
     }
 
     public UserDao userDao(){
