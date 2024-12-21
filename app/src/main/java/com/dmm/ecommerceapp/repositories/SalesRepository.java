@@ -41,11 +41,11 @@ public class SalesRepository {
     public void delete(Sales sales) {
         executorService.execute(() -> salesDao.delete(sales));
     }
-    public LiveData<List<Sales>> searchSalesByProduct(String query) {
-        return salesDao.searchSalesByProduct("%" + query + "%");
+    public LiveData<List<Sales>> searchSalesByProduct(long productId) {
+        return salesDao.searchSalesByProduct(productId);
     }
-    public LiveData<List<Sales>> searchSalesByUser(String query) {
-        return salesDao.searchSalesByUser("%" + query + "%");
+    public LiveData<List<Sales>> searchSalesByUser(long userId) {
+        return salesDao.searchSalesByUser(userId);
     }
     public LiveData<List<Sales>> searchSalesByDate(String query) {
         return salesDao.searchSalesByDate("%" + query + "%");
@@ -53,11 +53,11 @@ public class SalesRepository {
     public LiveData<List<Sales>> returnRatingAndFeedbackById(String query) {
         return salesDao.returnRatingAndFeedbackById("%" + query + "%");
     }
-    public LiveData<List<Sales>> returnRatingAndFeedbackByProductId(String query) {
-        return salesDao.returnRatingAndFeedbackByProductId("%" + query + "%");
+    public LiveData<List<Sales>> returnRatingAndFeedbackByProductId(long productId) {
+        return salesDao.returnRatingAndFeedbackByProductId(productId);
     }
-    public int returnQuantityByProductId(String query) {
-        LiveData<List<Sales>> sales = salesDao.returnListQuantityByProductId("%" + query + "%");
+    public int returnQuantityByProductId(long productId) {
+        LiveData<List<Sales>> sales = salesDao.returnListQuantityByProductId(productId);
 
         List<Sales> listSales= sales.getValue();
         if (listSales == null) {
