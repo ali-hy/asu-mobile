@@ -1,4 +1,4 @@
-/*package com.dmm.ecommerceapp.activities;
+package com.dmm.ecommerceapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,7 +47,7 @@ public class SearchActivity extends AppCompatActivity {
 
         // Initialize product list
         allProducts = new ArrayList<>(); // Replace this with actual product data
-        populateSampleProducts(); // For demo purposes
+        //populateSampleProducts(); // For demo purposes
 
         // Set up text search
         searchButton.setOnClickListener(v -> {
@@ -137,12 +137,11 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     // Populate sample products (for demo)
-    private void populateSampleProducts() {
+    /*private void populateSampleProducts() {
         allProducts.add(new Product("Apple"));
         allProducts.add(new Product("Banana"));
         allProducts.add(new Product("Laptop"));
         allProducts.add(new Product("Camera"));
-    }
+    }*/
 }
 
- */
