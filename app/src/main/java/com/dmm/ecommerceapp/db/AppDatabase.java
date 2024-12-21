@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase;
 
 import com.dmm.ecommerceapp.data.ProductDao;
 import com.dmm.ecommerceapp.data.SalesDao;
+import com.dmm.ecommerceapp.data.UserDao;
 import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.data.CartItemDao;
@@ -19,7 +20,7 @@ import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.models.User;
 
-@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class}, version = 4, exportSchema = false)
+@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class}, version = 5, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase instance;
@@ -41,6 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     // Abstract DAO methods
+    public abstract UserDao userDao();
     public abstract CartItemDao cartItemDao();
     public abstract OrderDao orderDao();
     public abstract ProductDao productDao();
