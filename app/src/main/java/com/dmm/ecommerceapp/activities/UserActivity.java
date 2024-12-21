@@ -1,6 +1,8 @@
-package com.dmm.ecommerceapp;
+package com.dmm.ecommerceapp.activities;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.dmm.ecommerceapp.R;
 
 public class UserActivity extends AppCompatActivity {
     @Override

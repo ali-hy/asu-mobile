@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dmm.ecommerceapp.activities.CartActivity;
 import com.dmm.ecommerceapp.services.UserService;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnCourses).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CoursesActivity.class));
+                startActivity(new Intent(MainActivity.this, CartActivity.class));
             }
         });
 
