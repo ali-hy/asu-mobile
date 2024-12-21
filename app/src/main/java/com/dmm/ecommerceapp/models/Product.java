@@ -12,6 +12,7 @@ public class Product {
     private double price;
     private String barcode;
     private String imageUrl;
+    private int quantity;
 
     // Getters and Setters
     public long getId() {
@@ -61,4 +62,13 @@ public class Product {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }
+
