@@ -23,10 +23,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UserService userService = UserService.getInstance(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        UserService userService = UserService.getInstance(this);
 
         // Initialize Views
         etEmail = findViewById(R.id.etEmail);
@@ -45,31 +45,37 @@ public class LoginActivity extends AppCompatActivity {
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    userService.attemptLogin(email, password,
-                            new DisposableMaybeObserver<User>() {
-                                @Override
-                                public void onSuccess(@NonNull User user) {
-                                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+//                    userService.attemptLogin(email, password,
+//                            new DisposableMaybeObserver<User>() {
+//                                @Override
+//                                public void onSuccess(@NonNull User user) {
+//                                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+//
+//                                    // Navigate to Main Categories Screen
+//                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//
+//                                @Override
+//                                public void onError(@NonNull Throwable e) {
+//                                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                                @Override
+//                                public void onComplete() {
+//                                    Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }, () -> {
+//                                Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+//                                return null;
+//                            });
+                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                                    // Navigate to Main Categories Screen
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-
-                                @Override
-                                public void onError(@NonNull Throwable e) {
-                                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onComplete() {
-                                    Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
-                                }
-                            }, () -> {
-                                Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
-                                return null;
-                            });
+                    // Navigate to Main Categories Screen
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
