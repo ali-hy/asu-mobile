@@ -109,7 +109,8 @@ public class UserService {
                     public void onSuccess(@NonNull User user) {
                         user.setHashedPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
                         dbClient.userDao().update(user)
-                                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
                     }
 
                     @Override

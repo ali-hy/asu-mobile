@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.dmm.ecommerceapp.data.EcommerceDatabase;
 import com.dmm.ecommerceapp.data.ProductDao;
+import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.Product;
 
 import java.util.List;
@@ -29,6 +30,13 @@ public class ProductRepository {
 
     public void insert(Product product) {
         executorService.execute(() -> productDao.insert(product));
+    }
+    public void update(Product product) {
+        executorService.execute(() -> productDao.update(product));
+    }
+
+    public void delete(Product product) {
+        executorService.execute(() -> productDao.delete(product));
     }
 
     public LiveData<List<Product>> searchProducts(String query) {

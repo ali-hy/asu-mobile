@@ -2,6 +2,8 @@ package com.dmm.ecommerceapp.models;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.dmm.ecommerceapp.enums.Role;
+
 @Entity(tableName = "user_table")
 public class User {
     @PrimaryKey(autoGenerate = true)
@@ -11,6 +13,7 @@ public class User {
     private String hashedPassword;
     private String securityQuestion;
     private String securityAnswer;
+    private Role role;
 
     // Getters and Setters
     public long getId() {
@@ -59,5 +62,13 @@ public class User {
 
     public void setSecurityAnswer(String securityAnswer) {
         this.securityAnswer = securityAnswer;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

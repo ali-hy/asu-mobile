@@ -8,13 +8,15 @@ import androidx.room.RoomDatabase;
 
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.CartItem;
+import com.dmm.ecommerceapp.models.Sales;
 
-@Database(entities = {Product.class, CartItem.class}, version = 1, exportSchema = false)
+@Database(entities = {Product.class, CartItem.class, Sales.class}, version = 1, exportSchema = false)
 public abstract class EcommerceDatabase extends RoomDatabase {
     private static volatile EcommerceDatabase INSTANCE;
 
     public abstract ProductDao productDao();
     public abstract CartItemDao cartItemDao();
+    public abstract SalesDao salesDao();
 
     public static EcommerceDatabase getInstance(Context context) {
         if (INSTANCE == null) {

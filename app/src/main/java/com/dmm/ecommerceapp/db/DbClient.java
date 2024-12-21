@@ -3,11 +3,9 @@ package com.dmm.ecommerceapp.db;
 import android.content.Context;
 import androidx.room.Room;
 
-import com.dmm.ecommerceapp.models.User;
-import com.dmm.ecommerceapp.models.UserDao;
+import com.dmm.ecommerceapp.data.UserDao;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 public class DbClient {
 
