@@ -5,37 +5,66 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/cart_items_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Total Price and Checkout Section -->
-        <LinearLayout
+        <!-- Empty Cart Message -->
+        <TextView
+            android:id="@+id/tv_empty_cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end"
-            android:paddingTop="16dp">
+            android:text="Your cart is empty"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="#808080"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp" />
 
-            <TextView
-                android:id="@+id/tv_total_price"
-                android:layout_width="wrap_content"
+        <!-- Cart Items Container -->
+        <LinearLayout
+            android:id="@+id/cart_items_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Total Price and Checkout Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Total: $0.00"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="16dp" />
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:paddingTop="16dp">
 
+                <TextView
+                    android:id="@+id/tv_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total: $0.00"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="16dp" />
+
+                <Button
+                    android:id="@+id/btn_checkout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Checkout"
+                    android:enabled="false"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#6200EE" />
+            </LinearLayout>
+
+            <!-- Clear Cart Button -->
             <Button
-                android:id="@+id/btn_checkout"
-                android:layout_width="wrap_content"
+                android:id="@+id/btn_clear_cart"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Checkout"
+                android:text="Clear Cart"
+                android:layout_marginTop="16dp"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#6200EE" />
+                android:backgroundTint="#B00020" />
         </LinearLayout>
     </LinearLayout>
-
 </ScrollView>

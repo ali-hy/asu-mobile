@@ -19,4 +19,16 @@ public class ProductViewModel extends AndroidViewModel {
         repository = new ProductRepository(application);
         allProducts = repository.getAllProducts();
     }
+
+    public LiveData<List<Product>> getAllProducts() {
+        return allProducts;
+    }
+
+    public LiveData<List<Product>> searchProducts(String query) {
+        return repository.searchProducts(query);
+    }
+
+    public void insert(Product product) {
+        repository.insert(product);
+    }
 }
