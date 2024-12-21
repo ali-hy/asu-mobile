@@ -77,12 +77,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 
 import com.dmm.ecommerceapp.activities.CartActivity;
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.repositories.ProductRepository;
 import com.dmm.ecommerceapp.services.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userService = UserService.getInstance(this);
 
         // Check if the user is logged in (e.g., shared preferences or session variable)
         if (!isLoggedIn()) {
@@ -115,22 +118,32 @@ public class MainActivity extends AppCompatActivity {
 
         // Add products dynamically
         LinearLayout productContainer = findViewById(R.id.productContainer);
-        List<Product> productList = getSampleProducts();
-        displayProducts(productContainer, productList);
+
+        getAndDisplayProducts();
     }
 
     private boolean isLoggedIn() {
-        // return userService.isLoggedIn();
-        return true; // Placeholder logic
+         return userService.isLoggedIn();
     }
 
-    private List<Product> getSampleProducts() {
+    private void getAndDisplayProducts() {
         // Create a sample list of products
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("E-Book A", "A fascinating e-book about technology.", 9.99, "123", "image_url"));
-        products.add(new Product("Online Course B", "Learn advanced programming techniques.", 19.99, "456", "image_url"));
-        products.add(new Product("License C", "Software license for productivity tools.", 29.99, "789", "image_url"));
-        return products;
+        ProductRepository productRepository = new ProductRepository(this.getApplication());
+        LiveData<List<Product>> allProducts = productRepository.getAllProducts();
+
+        allProducts.observe(this, products -> {
+            if (products == null || products.isEmpty()) {
+                productRepository.insert(new Product("In-Memory Product 1", "Description for Product 1", 12.99, "111111", "image_url_1"));
+            }
+
+            clearProductsFromView();
+            displayProducts(findViewById(R.id.productContainer), products);
+        });
+    }
+
+    private void clearProductsFromView() {
+        LinearLayout productContainer = findViewById(R.id.productContainer);
+        productContainer.removeAllViews();
     }
 
     private void displayProducts(LinearLayout container, List<Product> productList) {
