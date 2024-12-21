@@ -6,7 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dmm.ecommerceapp.services.UserService;
+
 public class MainActivity extends AppCompatActivity {
+    UserService userService;
+
+    public MainActivity() {
+        userService = UserService.getInstance(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isLoggedIn() {
-        SharedPreferences preferences = getSharedPreferences("user_session", MODE_PRIVATE);
-        return preferences.getBoolean("is_logged_in", false);
+        return userService.isLoggedIn();
     }
 }
