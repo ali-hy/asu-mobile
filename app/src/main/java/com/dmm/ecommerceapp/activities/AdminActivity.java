@@ -1,8 +1,10 @@
-package com.dmm.ecommerceapp;
+package com.dmm.ecommerceapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.dmm.ecommerceapp.R;
 
 public class AdminActivity extends AppCompatActivity {
     @Override
