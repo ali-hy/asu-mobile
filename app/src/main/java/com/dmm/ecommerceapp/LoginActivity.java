@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dmm.ecommerceapp.activities.AdminActivity;
 import com.dmm.ecommerceapp.models.User;
 import com.dmm.ecommerceapp.services.UserService;
 
@@ -21,6 +22,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin, btnSignUp, btnForgotPassword;
 
+    // Admin credentials
+    private static final String ADMIN_EMAIL = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                } else if (isAdmin(email, password)) {
+                    // Admin login successful
+                    Toast.makeText(LoginActivity.this, "Admin Login Successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                        startActivity(intent);
+                        finish();
+                    
                 } else {
                     userService.attemptLogin(email, password,
                             new DisposableMaybeObserver<User>() {
@@ -93,5 +105,9 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    // Check if credentials match admin credentials
+    private boolean isAdmin(String email, String password) {
+        return email.equals(ADMIN_EMAIL) && password.equals(ADMIN_PASSWORD);
     }
 }

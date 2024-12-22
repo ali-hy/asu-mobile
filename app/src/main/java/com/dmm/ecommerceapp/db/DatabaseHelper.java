@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ecommerce.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_ID = "id";
@@ -17,6 +17,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_SECURITY_QUESTION = "security_question";
     private static final String COLUMN_SECURITY_ANSWER = "security_answer";
+
+    // Table: Products
+    private static final String TABLE_PRODUCTS = "products";
+    private static final String COLUMN_PRODUCT_ID = "product_id";
+    private static final String COLUMN_PRODUCT_NAME = "name";
+    private static final String COLUMN_PRODUCT_DESCRIPTION = "description";
+    private static final String COLUMN_PRODUCT_PRICE = "price";
+    private static final String COLUMN_PRODUCT_QUANTITY = "quantity";
+    private static final String COLUMN_PRODUCT_CATEGORY_ID = "category_id";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,13 +40,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_SECURITY_QUESTION + " TEXT, "
                 + COLUMN_SECURITY_ANSWER + " TEXT)";
         db.execSQL(createUsersTable);
+
+        // Create Products Table
+        String createProductsTable = "CREATE TABLE " + TABLE_PRODUCTS + "("
+                + COLUMN_PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_PRODUCT_NAME + " TEXT, "
+                + COLUMN_PRODUCT_DESCRIPTION + " TEXT, "
+                + COLUMN_PRODUCT_PRICE + " REAL, "
+                + COLUMN_PRODUCT_QUANTITY + " INTEGER, "
+                + COLUMN_PRODUCT_CATEGORY_ID + " INTEGER)";
+        db.execSQL(createProductsTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        onCreate(db);
+        if (oldVersion < 2) {
+            // Create Products Table if it doesn't exist
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PRODUCTS + "("
+                    + COLUMN_PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + COLUMN_PRODUCT_NAME + " TEXT, "
+                    + COLUMN_PRODUCT_DESCRIPTION + " TEXT, "
+                    + COLUMN_PRODUCT_PRICE + " REAL, "
+                    + COLUMN_PRODUCT_QUANTITY + " INTEGER, "
+                    + COLUMN_PRODUCT_CATEGORY_ID + " INTEGER)");
+        }
     }
+
 
     // Check if email exists
     public boolean checkEmailExists(String email) {
@@ -141,4 +169,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_USERS, null, values);
         return result != -1;
     }
+
+    // product helper functions for admin
+    // Add a new product
+    public boolean addProduct(String name, String description, double price, int quantity, int categoryId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PRODUCT_NAME, name);
+        values.put(COLUMN_PRODUCT_DESCRIPTION, description);
+        values.put(COLUMN_PRODUCT_PRICE, price);
+        values.put(COLUMN_PRODUCT_QUANTITY, quantity);
+        values.put(COLUMN_PRODUCT_CATEGORY_ID, categoryId);
+
+        long result = db.insert(TABLE_PRODUCTS, null, values);
+        return result != -1;
+    }
+
+    // Update an existing product
+    public boolean updateProduct(int id, String name, String description, double price, int quantity, int categoryId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PRODUCT_NAME, name);
+        values.put(COLUMN_PRODUCT_DESCRIPTION, description);
+        values.put(COLUMN_PRODUCT_PRICE, price);
+        values.put(COLUMN_PRODUCT_QUANTITY, quantity);
+        values.put(COLUMN_PRODUCT_CATEGORY_ID, categoryId);
+
+        int rowsUpdated = db.update(TABLE_PRODUCTS, values, COLUMN_PRODUCT_ID + "=?", new String[]{String.valueOf(id)});
+        return rowsUpdated > 0;
+    }
+
+    // Delete a product
+    public boolean deleteProduct(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_PRODUCTS, COLUMN_PRODUCT_ID + "=?", new String[]{String.valueOf(id)});
+        return rowsDeleted > 0;
+    }
+
+    // Get all products
+    public Cursor getAllProducts() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_PRODUCTS, null);
+    }
+
+    // Search products by name
+    public Cursor searchProducts(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_PRODUCT_NAME + " LIKE ?", new String[]{"%" + query + "%"});
+    }
+
+
 }

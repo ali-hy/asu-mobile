@@ -27,6 +27,10 @@
         <activity android:name=".MainActivity" android:exported="false" />
         <activity android:name=".activities.CartActivity" />
         <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.AdminActivity" />
+        <activity android:name=".activities.AddProductActivity" />
+        <activity android:name=".activities.DeleteProductActivity" />
+        <activity android:name=".activities.EditProductActivity" />
         <activity android:name=".EbooksActivity" android:exported="false" />
         <activity android:name=".CoursesActivity" android:exported="false" />
         <activity android:name=".LicensesActivity" android:exported="false" />
