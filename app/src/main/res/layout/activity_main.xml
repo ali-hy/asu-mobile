@@ -47,6 +47,13 @@
             android:text="@string/gift_cards"
             android:layout_marginTop="10dp" />
 
+        <Button
+            android:id="@+id/btnSearchPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go to Search Page"
+            android:layout_marginTop="20dp" />
+
         <!-- Container for dynamically added product views -->
         <LinearLayout
             android:id="@+id/productContainer"

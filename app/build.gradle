@@ -62,17 +62,11 @@ dependencies {
     // Google Material Design
     implementation 'com.google.android.material:material:1.9.0'
 
-    // Barcode Scanning (ML Kit)
-    implementation 'com.google.mlkit:barcode-scanning:17.0.3'
 
-    // CameraX for Camera Integration
-    implementation 'androidx.camera:camera-core:1.5.0'
-    implementation 'androidx.camera:camera-camera2:1.5.0'
-    implementation 'androidx.camera:camera-lifecycle:1.5.0'
-    implementation 'androidx.camera:camera-view:1.5.0'
 
-    // Optional ML Kit Barcode Scanning Library (for Play Services compatibility)
-    implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.0.0'
+
+
+
 
     // Utility Libraries
     implementation libs.jbcrypt

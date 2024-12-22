@@ -1,70 +1,3 @@
-/*package com.dmm.ecommerceapp;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.dmm.ecommerceapp.activities.CartActivity;
-import com.dmm.ecommerceapp.services.UserService;
-
-public class MainActivity extends AppCompatActivity {
-    UserService userService;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        userService = UserService.getInstance(this);
-
-        // Check if the user is logged in (e.g., shared preferences or session variable)
-        if (!isLoggedIn()) {
-            // Redirect to LoginActivity if not logged in
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish(); // Close MainActivity to prevent going back to it
-            return;
-        }
-
-        findViewById(R.id.btnEbooks).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, EbooksActivity.class));
-            }
-        });
-
-        findViewById(R.id.btnCourses).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CartActivity.class));
-            }
-        });
-
-        findViewById(R.id.btnLicenses).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LicensesActivity.class));
-            }
-        });
-
-        findViewById(R.id.btnGiftCards).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, GiftCardsActivity.class));
-            }
-        });
-    }
-
-    private boolean isLoggedIn() {
-        return userService.isLoggedIn();
-//        return true;
-    }
-
-}
-
- */
-
 package com.dmm.ecommerceapp;
 
 import android.content.Intent;
@@ -80,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 
 import com.dmm.ecommerceapp.activities.CartActivity;
+import com.dmm.ecommerceapp.activities.SearchActivity;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.repositories.ProductRepository;
 import com.dmm.ecommerceapp.services.UserService;
@@ -116,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnLicenses).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LicensesActivity.class)));
         findViewById(R.id.btnGiftCards).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GiftCardsActivity.class)));
 
+        // Add functionality for navigating to the search page
+        Button btnSearchPage = findViewById(R.id.btnSearchPage);
+        btnSearchPage.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
+        });
+
         // Add products dynamically
         LinearLayout productContainer = findViewById(R.id.productContainer);
 
@@ -123,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isLoggedIn() {
-         return userService.isLoggedIn();
+        return userService.isLoggedIn();
     }
 
     private void getAndDisplayProducts() {
@@ -174,4 +115,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-

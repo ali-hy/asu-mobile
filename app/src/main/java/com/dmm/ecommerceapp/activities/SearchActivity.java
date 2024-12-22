@@ -1,10 +1,8 @@
 package com.dmm.ecommerceapp.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.R;
 import com.dmm.ecommerceapp.models.Product;
-import com.google.mlkit.vision.barcode.Barcode;
-
-import com.google.mlkit.vision.barcode.BarcodeScanner;
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
-import com.google.mlkit.vision.barcode.BarcodeScanning;
-import com.google.mlkit.vision.common.InputImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +23,9 @@ import java.util.Locale;
 public class SearchActivity extends AppCompatActivity {
 
     private static final int SPEECH_REQUEST_CODE = 1;
-    private static final int CAMERA_REQUEST_CODE = 2;
 
     private EditText searchInput;
-    private Button searchButton, voiceSearchButton, barcodeSearchButton;
+    private Button searchButton, voiceSearchButton;
     private LinearLayout resultsContainer;
     private List<Product> allProducts; // Replace with your product data source
 
@@ -46,12 +37,11 @@ public class SearchActivity extends AppCompatActivity {
         searchInput = findViewById(R.id.search_input);
         searchButton = findViewById(R.id.search_button);
         voiceSearchButton = findViewById(R.id.voice_search_button);
-        barcodeSearchButton = findViewById(R.id.barcode_search_button);
         resultsContainer = findViewById(R.id.results_container);
 
         // Initialize product list
         allProducts = new ArrayList<>(); // Replace this with actual product data
-        populateSampleProducts(); // For demo purposes
+        //populateSampleProducts(); // For demo purposes
 
         // Set up text search
         searchButton.setOnClickListener(v -> {
@@ -65,9 +55,6 @@ public class SearchActivity extends AppCompatActivity {
 
         // Set up voice search
         voiceSearchButton.setOnClickListener(v -> startVoiceSearch());
-
-        // Set up barcode search
-        barcodeSearchButton.setOnClickListener(v -> scanBarcode());
     }
 
     // Search products by text
@@ -113,59 +100,11 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    // Barcode search
-    private void scanBarcode() {
-        BarcodeScannerOptions options =
-                new BarcodeScannerOptions.Builder()
-                        .setBarcodeFormats(
-                                Barcode.FORMAT_QR_CODE,
-                                Barcode.FORMAT_EAN_13,
-                                Barcode.FORMAT_UPC_A)
-                        .build();
-
-        BarcodeScanner scanner = BarcodeScanning.getClient(options);
-
-        // Simulated image capture (replace this with actual camera integration)
-        Bitmap yourBitmap = captureDummyBarcodeImage(); // Placeholder function
-        if (yourBitmap == null) {
-            Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            InputImage image = InputImage.fromBitmap(yourBitmap, 0);
-
-            scanner.process(image)
-                    .addOnSuccessListener(barcodes -> {
-                        if (barcodes.isEmpty()) {
-                            Toast.makeText(this, "No barcode detected", Toast.LENGTH_SHORT).show();
-                        }
-                        for (Barcode barcode : barcodes) {
-                            String barcodeValue = barcode.getRawValue();
-                            searchProducts(barcodeValue); // Search by barcode value
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Barcode scanning failed", Toast.LENGTH_SHORT).show();
-                        Log.e("BarcodeScanner", e.getMessage());
-                    });
-        } catch (Exception e) {
-            Toast.makeText(this, "Failed to process image", Toast.LENGTH_SHORT).show();
-            Log.e("InputImageError", e.getMessage());
-        }
-    }
-
     // Populate sample products (for demo)
-    private void populateSampleProducts() {
+    /*private void populateSampleProducts() {
         allProducts.add(new Product("Apple"));
         allProducts.add(new Product("Banana"));
         allProducts.add(new Product("Laptop"));
         allProducts.add(new Product("Camera"));
-    }
-
-    // Dummy function to simulate capturing an image (replace with actual camera logic)
-    private Bitmap captureDummyBarcodeImage() {
-        // Return a valid Bitmap if you're integrating with a camera or testing
-        return null; // Replace with actual Bitmap from camera
-    }
+    }*/
 }
