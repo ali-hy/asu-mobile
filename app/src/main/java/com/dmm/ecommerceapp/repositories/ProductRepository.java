@@ -56,6 +56,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.dmm.ecommerceapp.data.EcommerceDatabase;
 import com.dmm.ecommerceapp.data.ProductDao;
+import com.dmm.ecommerceapp.models.Category;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.utils.IFunction;
 import com.dmm.ecommerceapp.utils.IFunctionNoParam;
@@ -79,30 +80,27 @@ public class ProductRepository {
         allProducts = productDao.getAllProducts();
     }
 
-    // Add sample products to the in-memory list
-    private void populateInMemoryProducts() {
-//        inMemoryProducts.add(new Product("In-Memory Product 1", "Description for Product 1", 12.99, "111111", "image_url_1"));
-//        inMemoryProducts.add(new Product("In-Memory Product 2", "Description for Product 2", 8.49, "222222", "image_url_2"));
-//        inMemoryProducts.add(new Product("In-Memory Product 3", "Description for Product 3", 19.99, "333333", "image_url_3"));
-    }
 
     // Database-related methods
     public LiveData<List<Product>> getAllProducts() {
         return allProducts;
     }
 
+    public LiveData<List<Product>> getProductsByCategory(long categoryId) {
+        return productDao.getByCategory(categoryId);
+    }
 
-        public void insert(Product product, IFunctionNoParam<Void> onSuccess, IFunctionNoParam<Void> onError) {
-            executorService.execute(() -> {
+    public void insert(Product product, IFunctionNoParam<Void> onSuccess, IFunction<Throwable, Void> onError) {
+        executorService.execute(() -> {
                     try {
                         productDao.insert(product);
                         new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
                     } catch (Exception e) {
-                        new Handler(Looper.getMainLooper()).post(() -> onError.apply());
+                        new Handler(Looper.getMainLooper()).post(() -> onError.apply(e));
                     }
                 }
-            );
-        }
+        );
+    }
 
     public void update(Product product, IFunctionNoParam<Void> onSuccess, IFunctionNoParam<Void> onError) {
         executorService.execute(() -> {
@@ -128,7 +126,8 @@ public class ProductRepository {
         executorService.execute(() -> {
             try {
                 productDao.delete(product);
-                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());;
+                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
+                ;
             } catch (Exception e) {
                 productDao.delete(product);
             }

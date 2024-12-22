@@ -29,6 +29,12 @@
         android:layout_height="59dp"
         android:hint="Quantity" />
 
+    <Spinner
+        android:id="@+id/sCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Category" />
+
     <Button
         android:id="@+id/btnAddProduct"
         android:layout_width="match_parent"

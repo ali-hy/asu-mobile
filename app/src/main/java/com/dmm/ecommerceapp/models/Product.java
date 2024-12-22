@@ -118,6 +118,14 @@ public class Product {
         this.imageUrl = null; // Optional, can be set later
     }
 
+    public Product(String name, double price, String description, int quantity, long categoryId) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.categoryId = categoryId;
+    }
+
     // Getters and Setters
     public long getId() {
         return id;
