@@ -6,12 +6,13 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.dmm.ecommerceapp.models.Category;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.models.User;
 
-@Database(entities = {User.class, Product.class, CartItem.class, Sales.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class, Product.class, CartItem.class, Sales.class, Category.class}, version = 3, exportSchema = false)
 public abstract class EcommerceDatabase extends RoomDatabase {
     private static volatile EcommerceDatabase INSTANCE;
 

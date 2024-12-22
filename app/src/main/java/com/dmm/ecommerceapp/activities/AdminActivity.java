@@ -18,9 +18,12 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        Button btnAddProduct = findViewById(R.id.btnAddProduct);
-        Button btnEditProduct = findViewById(R.id.btnEditProduct);
-        Button btnDeleteProduct = findViewById(R.id.btnDeleteProduct);
+        btnAddProduct = findViewById(R.id.btnAddProduct);
+        btnEditProduct = findViewById(R.id.btnEditProduct);
+        btnDeleteProduct = findViewById(R.id.btnDeleteProduct);
+        btnAddCategory = findViewById(R.id.btnAddCategory);
+        btnEditCategory = findViewById(R.id.btnEditCategory);
+        btnDeleteCategory = findViewById(R.id.btnDeleteCategory);
 
         // Set button click listeners
         btnAddProduct.setOnClickListener(view -> {
@@ -37,21 +40,21 @@ public class AdminActivity extends AppCompatActivity {
             Intent intent = new Intent(AdminActivity.this, DeleteProductActivity.class);
             startActivity(intent);
         });
+
+        btnAddCategory.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, AddCategoryActivity.class);
+            startActivity(intent);
+        });
+
+        btnEditCategory.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, EditCategoryActivity.class);
+            startActivity(intent);
+        });
 //
-//        btnAddCategory.setOnClickListener(view -> {
-//            Intent intent = new Intent(AdminActivity.this, AddCategoryActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        btnEditCategory.setOnClickListener(view -> {
-//            Intent intent = new Intent(AdminActivity.this, EditCategoryActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        btnDeleteCategory.setOnClickListener(view -> {
-//            Intent intent = new Intent(AdminActivity.this, DeleteCategoryActivity.class);
-//            startActivity(intent);
-//        });
+        btnDeleteCategory.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, DeleteCategoryActivity.class);
+            startActivity(intent);
+        });
 //
 //        btnUserTransactions.setOnClickListener(view -> {
 //            Intent intent = new Intent(AdminActivity.this, UserTransactionsReportActivity.class);

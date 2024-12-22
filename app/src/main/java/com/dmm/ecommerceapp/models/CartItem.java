@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "cart_item_table", foreignKeys = @ForeignKey(entity = Product.class,
         parentColumns = "id",
         childColumns = "productId",
-        onDelete = ForeignKey.CASCADE))
+        onDelete = ForeignKey.NO_ACTION))
 public class CartItem {
     @PrimaryKey(autoGenerate = true)
     private long id;

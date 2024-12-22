@@ -71,18 +71,12 @@ public class ProductRepository {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     // In-memory product list
-    private final List<Product> inMemoryProducts;
     private final MutableLiveData<List<Product>> inMemoryLiveData = new MutableLiveData<>();
 
     public ProductRepository(Application application) {
         EcommerceDatabase database = EcommerceDatabase.getInstance(application);
         productDao = database.productDao();
         allProducts = productDao.getAllProducts();
-
-        // Initialize in-memory product list
-        inMemoryProducts = new ArrayList<>();
-        populateInMemoryProducts();
-        inMemoryLiveData.setValue(inMemoryProducts);
     }
 
     // Add sample products to the in-memory list
@@ -128,16 +122,6 @@ public class ProductRepository {
     // In-memory methods
     public LiveData<List<Product>> getInMemoryProducts() {
         return inMemoryLiveData;
-    }
-
-    public void addProductToMemory(Product product) {
-        inMemoryProducts.add(product);
-        inMemoryLiveData.postValue(inMemoryProducts); // Notify observers
-    }
-
-    public void removeProductFromMemory(Product product) {
-        inMemoryProducts.remove(product);
-        inMemoryLiveData.postValue(inMemoryProducts); // Notify observers
     }
 
     public void deleteProduct(Product product, IFunctionNoParam<Void> onSuccess, IFunctionNoParam<Void> onError) {
