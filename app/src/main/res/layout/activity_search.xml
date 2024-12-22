@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#FFFFFF">
 
     <!-- Search Input -->
     <EditText
@@ -12,15 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter search text"
-        android:padding="8dp"
+        android:padding="12dp"
         android:background="@android:drawable/edit_text"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="12dp"
+        android:imeOptions="actionSearch"
+        android:inputType="text" />
 
     <!-- Search Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp"
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/search_button"
@@ -43,12 +48,46 @@
             android:text="Barcode Search" />
     </LinearLayout>
 
-    <!-- Search Results -->
-    <LinearLayout
-        android:id="@+id/results_container"
+    <!-- Camera Preview for Barcode Scanning -->
+    <FrameLayout
+        android:id="@+id/camera_preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="12dp"
+        android:background="#000000" />
+
+    <!-- Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/search_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminate="true" />
+
+    <!-- Search Results Header -->
+    <TextView
+        android:id="@+id/results_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        android:text="Search Results:"
+        android:layout_marginTop="12dp"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:background="#E0E0E0"
+        android:textColor="#000000" />
 
+    <!-- Search Results Container -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/results_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp" />
+    </ScrollView>
+</LinearLayout>
