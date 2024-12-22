@@ -31,10 +31,7 @@
         <activity android:name=".activities.AddProductActivity" />
         <activity android:name=".activities.DeleteProductActivity" />
         <activity android:name=".activities.EditProductActivity" />
-        <activity android:name=".EbooksActivity" android:exported="false" />
         <activity android:name=".CoursesActivity" android:exported="false" />
-        <activity android:name=".LicensesActivity" android:exported="false" />
-        <activity android:name=".GiftCardsActivity" android:exported="false" />
 
     </application>
 </manifest>

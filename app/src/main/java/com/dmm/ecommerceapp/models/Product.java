@@ -88,15 +88,18 @@ public class Product {
     private String barcode;
     private String imageUrl;
 
+    private int quantity;
+
     // Default constructor (required for Room)
     public Product() {
     }
 
     // Full parameterized constructor
-    public Product(String name, String description, double price, String barcode, String imageUrl) {
+    public Product(String name, String description, double price, int quantity, String barcode, String imageUrl) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.quantity = quantity;
         this.barcode = barcode;
         this.imageUrl = imageUrl;
     }
@@ -157,6 +160,14 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
 

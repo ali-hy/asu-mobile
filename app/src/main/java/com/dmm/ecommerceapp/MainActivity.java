@@ -14,7 +14,9 @@ import androidx.lifecycle.LiveData;
 
 import com.dmm.ecommerceapp.activities.CartActivity;
 import com.dmm.ecommerceapp.activities.SearchActivity;
+import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.repositories.CartItemRepository;
 import com.dmm.ecommerceapp.repositories.ProductRepository;
 import com.dmm.ecommerceapp.services.UserService;
 
@@ -40,15 +42,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set button actions for navigation
-        findViewById(R.id.btnEbooks).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, EbooksActivity.class)));
-        findViewById(R.id.btnCourses).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CartActivity.class));
-            }
+        Button btnCart = findViewById(R.id.btnCart);
+        btnCart.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
         });
-        findViewById(R.id.btnLicenses).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LicensesActivity.class)));
-        findViewById(R.id.btnGiftCards).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GiftCardsActivity.class)));
+
 
         // Add functionality for navigating to the search page
         Button btnSearchPage = findViewById(R.id.btnSearchPage);
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         allProducts.observe(this, products -> {
             if (products == null || products.isEmpty()) {
-                productRepository.insert(new Product("In-Memory Product 1", "Description for Product 1", 12.99, "111111", "image_url_1"));
+//                productRepository.insert(new Product("In-Memory Product 1", "Description for Product 1", 12.99, "111111", "image_url_1"));
             }
 
             clearProductsFromView();
@@ -106,8 +105,23 @@ public class MainActivity extends AppCompatActivity {
 
             // Handle Add to Cart button click
             addToCartButton.setOnClickListener(v -> {
-                // Add product to cart (placeholder logic)
-                Toast.makeText(MainActivity.this, product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
+                CartItemRepository cartItemRepository = new CartItemRepository(getApplication());
+                cartItemRepository.insert(
+                        new CartItem(
+                                userService.getCurrentUser().getId(),
+                                product.getId(),
+                                1,
+                                product.getPrice(),
+                                product.getName()
+                        ),
+                        () -> {
+                            Toast.makeText(MainActivity.this, product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
+                            return null;
+                        },
+                        () -> {
+                            Toast.makeText(MainActivity.this, "Error adding to cart!", Toast.LENGTH_SHORT).show();
+                            return null;
+                        });
             });
 
             // Add the product view to the container

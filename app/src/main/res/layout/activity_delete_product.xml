@@ -5,11 +5,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/etProductId"
+    <Spinner
+        android:id="@+id/productIdIn"
         android:layout_width="match_parent"
         android:layout_height="69dp"
-        android:hint="Product ID to Delete" />
+        android:hint="Select Product to Delete"
+        />
 
     <Button
         android:id="@+id/btnDeleteProduct"

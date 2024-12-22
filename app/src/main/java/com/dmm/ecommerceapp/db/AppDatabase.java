@@ -20,7 +20,7 @@ import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.models.User;
 
-@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class}, version = 5, exportSchema = false)
+@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class}, version = 6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase instance;

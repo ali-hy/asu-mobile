@@ -20,31 +20,17 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp" />
 
-        <Button
-            android:id="@+id/btnEbooks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/e_books" />
+<!--        <Button-->
+<!--            android:id="@+id/btnEbooks"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/e_books" />-->
 
         <Button
-            android:id="@+id/btnCourses"
+            android:id="@+id/btnCart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/online_courses"
-            android:layout_marginTop="10dp" />
-
-        <Button
-            android:id="@+id/btnLicenses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/software_licenses"
-            android:layout_marginTop="10dp" />
-
-        <Button
-            android:id="@+id/btnGiftCards"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/gift_cards"
+            android:text="@string/your_cart"
             android:layout_marginTop="10dp" />
 
         <Button

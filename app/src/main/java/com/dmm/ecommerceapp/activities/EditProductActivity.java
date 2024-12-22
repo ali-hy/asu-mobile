@@ -8,7 +8,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.R;
+import com.dmm.ecommerceapp.data.ProductDao;
+import com.dmm.ecommerceapp.db.AppDatabase;
 import com.dmm.ecommerceapp.db.DatabaseHelper;
+import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.repositories.ProductRepository;
 
 public class EditProductActivity extends AppCompatActivity {
 
@@ -44,16 +48,19 @@ public class EditProductActivity extends AppCompatActivity {
         });
     }
 
-    private void updateProductInDatabase(int id, String name, String description, double price, int quantity) {
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    private void updateProductInDatabase(long id, String name, String description, double price, int quantity) {
+        ProductRepository productRepository = new ProductRepository(getApplication());
 
-        boolean success = databaseHelper.updateProduct(id, name, description, price, quantity, 1); // Assuming category ID is 1 for now
+        Product product = new Product(name, price, description);;
+        product.setId(id);
 
-        if (success) {
+        productRepository.update(product, () -> {
             Toast.makeText(this, "Product Updated Successfully", Toast.LENGTH_SHORT).show();
             finish();
-        } else {
+            return null;
+        }, () -> {
             Toast.makeText(this, "Failed to Update Product", Toast.LENGTH_SHORT).show();
-        }
+            return null;
+        });
     }
 }

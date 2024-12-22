@@ -7,12 +7,16 @@ import androidx.lifecycle.LiveData;
 
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
 import com.dmm.ecommerceapp.data.CartItemDao;
 import com.dmm.ecommerceapp.data.EcommerceDatabase;
 import com.dmm.ecommerceapp.models.CartItem;
+import com.dmm.ecommerceapp.models.CartItemWithProduct;
+import com.dmm.ecommerceapp.utils.IFunctionNoParam;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -30,12 +34,24 @@ public class CartItemRepository {
         allCartItems = cartItemDao.getAllCartItems();
     }
 
+    public LiveData<List<CartItemWithProduct>> getCartItemsByUserID(long userId) {
+        return cartItemDao.getCartItemByUserID(userId);
+    }
+
     public LiveData<List<CartItem>> getAllCartItems() {
         return allCartItems;
     }
 
-    public void insert(CartItem cartItem) {
-        executorService.execute(() -> cartItemDao.insert(cartItem));
+    public void insert(CartItem cartItem, IFunctionNoParam<Void> onSuccess, IFunctionNoParam<Void> onError) {
+        executorService.execute(() -> {
+            try {
+                cartItemDao.insert(cartItem);
+                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
+
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> onError.apply());
+            }
+        });
     }
 
     public void update(CartItem cartItem) {

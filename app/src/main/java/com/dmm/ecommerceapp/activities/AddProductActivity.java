@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.R;
 import com.dmm.ecommerceapp.db.DatabaseHelper;
+import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.repositories.ProductRepository;
 
 public class AddProductActivity extends AppCompatActivity {
 
@@ -44,18 +46,16 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void addProductToDatabase(String name, String description, double price, int quantity) {
-        // Get an instance of DatabaseHelper
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        ProductRepository productRepository = new ProductRepository(getApplication());
+        Product product = new Product(name, price, description);;
 
-        // Insert product into the database
-        boolean success = databaseHelper.addProduct(name, description, price, quantity, 1); // Assuming category ID is 1 for now
-
-        if (success) {
+        productRepository.insert(product, () -> {
             Toast.makeText(this, "Product Added Successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity
-        } else {
+            finish();
+            return null;
+        }, () -> {
             Toast.makeText(this, "Failed to Add Product", Toast.LENGTH_SHORT).show();
-        }
+            return null;
+        }); // Assuming category ID is 1 for now
     }
-
 }

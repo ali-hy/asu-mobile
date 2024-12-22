@@ -48,6 +48,8 @@ public class ProductRepository {
 package com.dmm.ecommerceapp.repositories;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -55,6 +57,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.dmm.ecommerceapp.data.EcommerceDatabase;
 import com.dmm.ecommerceapp.data.ProductDao;
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.utils.IFunction;
+import com.dmm.ecommerceapp.utils.IFunctionNoParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,9 +87,9 @@ public class ProductRepository {
 
     // Add sample products to the in-memory list
     private void populateInMemoryProducts() {
-        inMemoryProducts.add(new Product("In-Memory Product 1", "Description for Product 1", 12.99, "111111", "image_url_1"));
-        inMemoryProducts.add(new Product("In-Memory Product 2", "Description for Product 2", 8.49, "222222", "image_url_2"));
-        inMemoryProducts.add(new Product("In-Memory Product 3", "Description for Product 3", 19.99, "333333", "image_url_3"));
+//        inMemoryProducts.add(new Product("In-Memory Product 1", "Description for Product 1", 12.99, "111111", "image_url_1"));
+//        inMemoryProducts.add(new Product("In-Memory Product 2", "Description for Product 2", 8.49, "222222", "image_url_2"));
+//        inMemoryProducts.add(new Product("In-Memory Product 3", "Description for Product 3", 19.99, "333333", "image_url_3"));
     }
 
     // Database-related methods
@@ -94,8 +98,27 @@ public class ProductRepository {
     }
 
 
-    public void insert(Product product) {
-        executorService.execute(() -> productDao.insert(product));
+        public void insert(Product product, IFunctionNoParam<Void> onSuccess, IFunctionNoParam<Void> onError) {
+            executorService.execute(() -> {
+                    try {
+                        productDao.insert(product);
+                        new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
+                    } catch (Exception e) {
+                        new Handler(Looper.getMainLooper()).post(() -> onError.apply());
+                    }
+                }
+            );
+        }
+
+    public void update(Product product, IFunctionNoParam<Void> onSuccess, IFunctionNoParam<Void> onError) {
+        executorService.execute(() -> {
+            try {
+                productDao.update(product);
+                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> onError.apply());
+            }
+        });
     }
 
     public LiveData<List<Product>> searchProducts(String query) {
@@ -115,5 +138,16 @@ public class ProductRepository {
     public void removeProductFromMemory(Product product) {
         inMemoryProducts.remove(product);
         inMemoryLiveData.postValue(inMemoryProducts); // Notify observers
+    }
+
+    public void deleteProduct(Product product, IFunctionNoParam<Void> onSuccess, IFunctionNoParam<Void> onError) {
+        executorService.execute(() -> {
+            try {
+                productDao.delete(product);
+                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());;
+            } catch (Exception e) {
+                productDao.delete(product);
+            }
+        });
     }
 }

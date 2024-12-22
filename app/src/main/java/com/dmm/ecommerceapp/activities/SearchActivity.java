@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.R;
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.repositories.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,6 @@ public class SearchActivity extends AppCompatActivity {
     private EditText searchInput;
     private Button searchButton, voiceSearchButton;
     private LinearLayout resultsContainer;
-    private List<Product> allProducts; // Replace with your product data source
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +38,6 @@ public class SearchActivity extends AppCompatActivity {
         searchButton = findViewById(R.id.search_button);
         voiceSearchButton = findViewById(R.id.voice_search_button);
         resultsContainer = findViewById(R.id.results_container);
-
-        // Initialize product list
-        allProducts = new ArrayList<>(); // Replace this with actual product data
-        //populateSampleProducts(); // For demo purposes
 
         // Set up text search
         searchButton.setOnClickListener(v -> {
@@ -59,12 +55,18 @@ public class SearchActivity extends AppCompatActivity {
 
     // Search products by text
     private void searchProducts(String query) {
-        resultsContainer.removeAllViews(); // Clear previous results
-        for (Product product : allProducts) {
-            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
-                addProductToResults(product);
-            }
-        }
+        resultsContainer.removeAllViews();
+
+        ProductRepository productRepository = new ProductRepository(getApplication());
+        productRepository.searchProducts(query).observe(
+                this, products -> {
+                    for (Product product : products) {
+                        if (product.getName().toLowerCase().contains(query.toLowerCase())) {
+                            addProductToResults(product);
+                        }
+                    }
+                }
+        );
     }
 
     // Display a product in the results container
@@ -99,12 +101,4 @@ public class SearchActivity extends AppCompatActivity {
             searchProducts(spokenText);
         }
     }
-
-    // Populate sample products (for demo)
-    /*private void populateSampleProducts() {
-        allProducts.add(new Product("Apple"));
-        allProducts.add(new Product("Banana"));
-        allProducts.add(new Product("Laptop"));
-        allProducts.add(new Product("Camera"));
-    }*/
 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.dmm.ecommerceapp.models.CartItem;
+import com.dmm.ecommerceapp.models.CartItemWithProduct;
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.repositories.CartItemRepository;
 import com.dmm.ecommerceapp.repositories.OrderRepository;
@@ -41,8 +42,12 @@ public class CartViewModel extends AndroidViewModel {
         return cartTotalLiveData;
     }
 
+    public LiveData<List<CartItemWithProduct>> getCartItemsByUserId(long userId) {
+        return cartRepository.getCartItemsByUserID(userId);
+    }
+
     public void addCartItem(CartItem cartItem) {
-        cartRepository.insert(cartItem);
+//        cartRepository.insert(cartItem);
         loadCartItems();
     }
 
@@ -65,6 +70,18 @@ public class CartViewModel extends AndroidViewModel {
             // Calculate cart total
             calculateCartTotal(cartItems);
         });
+    }
+
+    public void decreaseQuantity(CartItem cartItem) {
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            updateCartItem(cartItem);
+        }
+    }
+
+    public void increaseQuantity(CartItem cartItem) {
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        updateCartItem(cartItem);
     }
 
     private void calculateCartTotal(List<CartItem> cartItems) {
