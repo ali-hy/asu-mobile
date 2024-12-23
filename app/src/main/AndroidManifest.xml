@@ -1,8 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dmm.ecommerceapp">
 
-    <!-- Permission for voice search functionality -->
+    <!-- Permissions for voice search functionality and barcode scanning -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Declare camera hardware feature -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +20,8 @@
         android:theme="@style/Theme.EcommerceApp">
 
         <!-- Main Activity (Launcher) -->
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:exported="true"> <!-- Explicitly specify exported -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,16 +30,32 @@
         </activity>
 
         <!-- Other Activities -->
-        <activity android:name=".SignUpActivity" android:exported="false" />
-        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
-        <activity android:name=".MainActivity" android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
         <activity android:name=".activities.CartActivity" />
         <activity android:name=".activities.SearchActivity" />
         <activity android:name=".activities.AdminActivity" />
         <activity android:name=".activities.AddProductActivity" />
         <activity android:name=".activities.DeleteProductActivity" />
         <activity android:name=".activities.EditProductActivity" />
-        <activity android:name=".CoursesActivity" android:exported="false" />
+        <activity android:name=".activities.AddCategoryActivity" />
+        <activity android:name=".activities.EditCategoryActivity" />
+        <activity android:name=".activities.DeleteCategoryActivity" />
+        <activity
+            android:name=".CoursesActivity"
+            android:exported="false" />
 
+        <!-- New Activity for Barcode Scanning -->
+        <activity
+            android:name=".activities.BarcodeScannerActivity"
+            android:exported="true" />
     </application>
+
 </manifest>
