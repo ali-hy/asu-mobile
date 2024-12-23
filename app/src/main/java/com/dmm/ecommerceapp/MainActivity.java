@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,15 +17,21 @@ import androidx.lifecycle.LiveData;
 import com.dmm.ecommerceapp.activities.CartActivity;
 import com.dmm.ecommerceapp.activities.SearchActivity;
 import com.dmm.ecommerceapp.models.CartItem;
+import com.dmm.ecommerceapp.models.Category;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.repositories.CartItemRepository;
+import com.dmm.ecommerceapp.repositories.CategoryRepository;
 import com.dmm.ecommerceapp.repositories.ProductRepository;
 import com.dmm.ecommerceapp.services.UserService;
+import com.dmm.ecommerceapp.utils.CategoryAdapter;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     UserService userService;
+    CategoryRepository categoryRepository;
+    Spinner sCategory;
+    Category selectedCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         userService = UserService.getInstance(this);
+        sCategory = findViewById(R.id.sCategory);
+        categoryRepository = new CategoryRepository(getApplication());
+
+        // Get all categories
+        categoryRepository.getAllCategories().observe(this, categories -> {
+            CategoryAdapter categoryAdapter = new CategoryAdapter(this, categories);
+            sCategory.setAdapter(categoryAdapter);
+
+            sCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    selectedCategory = categories.get(i);
+                    getAndDisplayProducts();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    selectedCategory = null;
+                }
+            });
+        });
 
         // Check if the user is logged in (e.g., shared preferences or session variable)
         if (!isLoggedIn()) {
@@ -55,11 +84,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
         });
-
-        // Add products dynamically
-        LinearLayout productContainer = findViewById(R.id.productContainer);
-
-        getAndDisplayProducts();
     }
 
     private boolean isLoggedIn() {
@@ -69,14 +93,15 @@ public class MainActivity extends AppCompatActivity {
     private void getAndDisplayProducts() {
         // Create a sample list of products
         ProductRepository productRepository = new ProductRepository(this.getApplication());
-        LiveData<List<Product>> allProducts = productRepository.getAllProducts();
+        LiveData<List<Product>> allProducts;
+
+        if (selectedCategory == null) {
+            allProducts = productRepository.getAllProducts();
+        } else {
+            allProducts = productRepository.getProductsByCategory(selectedCategory.getId());
+        }
 
         allProducts.observe(this, products -> {
-            if (products == null || products.isEmpty()) {
-//                productRepository.insert(new Product("In-Memory Product 1", "Description for Product 1", 12.99, "111111", "image_url_1"));
-            }
-
-            clearProductsFromView();
             displayProducts(findViewById(R.id.productContainer), products);
         });
     }
@@ -87,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayProducts(LinearLayout container, List<Product> productList) {
+        clearProductsFromView();
         LayoutInflater inflater = LayoutInflater.from(this);
 
         for (Product product : productList) {

@@ -76,9 +76,14 @@ public class Product {
 package com.dmm.ecommerceapp.models;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "product_table")
+@Entity(tableName = "product_table", foreignKeys = @ForeignKey(
+        entity = Category.class,
+        parentColumns = "id",
+        childColumns = "categoryId"
+))
 public class Product {
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -87,7 +92,7 @@ public class Product {
     private double price;
     private String barcode;
     private String imageUrl;
-
+    private long categoryId;
     private int quantity;
 
     // Default constructor (required for Room)
@@ -111,6 +116,14 @@ public class Product {
         this.price = price;
         this.barcode = null; // Optional, can be set later
         this.imageUrl = null; // Optional, can be set later
+    }
+
+    public Product(String name, double price, String description, int quantity, long categoryId) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.categoryId = categoryId;
     }
 
     // Getters and Setters
@@ -168,6 +181,14 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 }
 

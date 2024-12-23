@@ -8,18 +8,18 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.dmm.ecommerceapp.data.CartItemDao;
-import com.dmm.ecommerceapp.data.OrderDao;
+import com.dmm.ecommerceapp.data.CategoryDao;
 import com.dmm.ecommerceapp.data.ProductDao;
 import com.dmm.ecommerceapp.data.SalesDao;
 import com.dmm.ecommerceapp.data.UserDao;
 import com.dmm.ecommerceapp.models.CartItem;
+import com.dmm.ecommerceapp.models.Category;
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.models.User;
 
-@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class}, version = 7, exportSchema = false)
+@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class, Category.class}, version = 7, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase instance;
@@ -65,4 +65,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract OrderDao orderDao();
     public abstract ProductDao productDao();
     public abstract SalesDao salesDao();
+    public abstract CategoryDao categoryDao();
 }

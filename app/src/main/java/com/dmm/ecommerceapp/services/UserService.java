@@ -15,6 +15,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.MaybeObserver;
+import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -99,20 +100,32 @@ public class UserService {
                 .map(user -> user.getSecurityAnswer().equals(securityAnswer));
     }
 
-    public void updatePassword(String email, String newPassword, IFunction<Throwable, Void> errorHandler) {
+    public void updatePassword(String email, String newPassword, IFunctionNoParam<Void> onSuccess, IFunction<Throwable, Void> errorHandler) {
         MaybeObserver<User> subscription = getUserByEmail(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(
-                        new DisposableMaybeObserver<User>() {
-                            @SuppressLint("CheckResult")
-                            @Override
-                            public void onSuccess(@NonNull User user) {
-                                user.setHashedPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
-                                dbClient.userDao().update(user)
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread());
-                            }
+                new DisposableMaybeObserver<User>() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public void onSuccess(@NonNull User user) {
+                        user.setHashedPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                        dbClient.userDao().update(user)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(
+                                        new DisposableCompletableObserver() {
+                                            @Override
+                                            public void onComplete() {
+                                                onSuccess.apply();
+                                            }
+
+                                            @Override
+                                            public void onError(@NonNull Throwable e) {
+                                                errorHandler.apply(e);
+                                            }
+                                        }
+                                );
+                    }
 
                             @Override
                             public void onError(@NonNull Throwable e) {

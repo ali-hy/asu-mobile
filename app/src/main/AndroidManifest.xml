@@ -25,6 +25,7 @@
             android:exported="true"> <!-- Explicitly specify exported -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -51,11 +52,6 @@
         <activity
             android:name=".CoursesActivity"
             android:exported="false" />
-
-        <!-- New Activity for Barcode Scanning -->
-        <activity
-            android:name=".activities.BarcodeScannerActivity"
-            android:exported="true" />
     </application>
 
 </manifest>

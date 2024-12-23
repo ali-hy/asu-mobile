@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.models.ProductWithCategory;
 
 import java.util.List;
 
@@ -27,4 +28,7 @@ public interface ProductDao {
 
     @Query("SELECT * FROM product_table WHERE name LIKE :searchQuery")
     LiveData<List<Product>> searchProducts(String searchQuery);
+
+    @Query("SELECT * FROM product_table WHERE categoryId = :categoryId")
+    LiveData<List<Product>> getByCategory(long categoryId);
 }
