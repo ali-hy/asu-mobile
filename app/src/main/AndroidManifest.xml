@@ -49,6 +49,7 @@
         <activity android:name=".activities.AddCategoryActivity" />
         <activity android:name=".activities.EditCategoryActivity" />
         <activity android:name=".activities.DeleteCategoryActivity" />
+        <activity android:name=".activities.SalesReportActivity" />
         <activity
             android:name=".CoursesActivity"
             android:exported="false" />

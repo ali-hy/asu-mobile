@@ -10,8 +10,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.CartItemWithProduct;
 import com.dmm.ecommerceapp.models.Order;
+import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.repositories.CartItemRepository;
 import com.dmm.ecommerceapp.repositories.OrderRepository;
+import com.dmm.ecommerceapp.repositories.SalesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class CartViewModel extends AndroidViewModel {
 
     private final CartItemRepository cartRepository;
     private final OrderRepository orderRepository;
+    private final SalesRepository salesRepository;
     private final MutableLiveData<List<CartItem>> cartItemsLiveData;
     private final MutableLiveData<Double> cartTotalLiveData;
 
@@ -29,6 +32,7 @@ public class CartViewModel extends AndroidViewModel {
         orderRepository = new OrderRepository(application);
         cartItemsLiveData = new MutableLiveData<>();
         cartTotalLiveData = new MutableLiveData<>(0.0);
+        salesRepository = new SalesRepository(application);
 
         // Load initial data
         loadCartItems();
@@ -114,6 +118,10 @@ public class CartViewModel extends AndroidViewModel {
 
         // Clear the cart after checkout
         clearCart();
+    }
+    public void createNewSale(Sales newOrder) {
+        // Insert the new order into the database
+        salesRepository.insert(newOrder);
     }
 
 

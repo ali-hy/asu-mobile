@@ -18,7 +18,6 @@ import com.dmm.ecommerceapp.repositories.ProductRepository;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,7 +32,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_search); // Updated layout reference
 
         searchInput = findViewById(R.id.search_input);
         searchButton = findViewById(R.id.search_button);
@@ -106,7 +105,7 @@ public class SearchActivity extends AppCompatActivity {
         integrator.initiateScan();
     }
 
-    // Handle voice search result
+    // Handle results
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -114,6 +113,7 @@ public class SearchActivity extends AppCompatActivity {
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
+            searchInput.setText(spokenText); // Set the spoken text into the input field
             searchProducts(spokenText);
         } else {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -121,8 +121,9 @@ public class SearchActivity extends AppCompatActivity {
                 if (result.getContents() == null) {
                     Toast.makeText(this, "Scan cancelled", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                    // Handle the scanned data as needed
+                    String scannedBarcode = result.getContents();
+                    searchInput.setText(scannedBarcode); // Set the scanned barcode into the input field
+                    searchProducts(scannedBarcode); // Search with the scanned barcode
                 }
             }
         }

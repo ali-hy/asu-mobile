@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.dmm.ecommerceapp.models.Product;
-import com.dmm.ecommerceapp.models.ProductWithCategory;
 
 import java.util.List;
 
@@ -21,14 +20,14 @@ public interface ProductDao {
     void update(Product product);
 
     @Delete
-    void delete( Product product);
+    void delete(Product product);
 
-    @Query("SELECT * FROM product_table")
+    @Query("SELECT * FROM product_table ORDER BY name ASC")
     LiveData<List<Product>> getAllProducts();
 
-    @Query("SELECT * FROM product_table WHERE name LIKE :searchQuery")
+    @Query("SELECT * FROM product_table WHERE name LIKE :searchQuery ORDER BY name ASC")
     LiveData<List<Product>> searchProducts(String searchQuery);
 
-    @Query("SELECT * FROM product_table WHERE categoryId = :categoryId")
+    @Query("SELECT * FROM product_table WHERE categoryId = :categoryId ORDER BY name ASC")
     LiveData<List<Product>> getByCategory(long categoryId);
 }
