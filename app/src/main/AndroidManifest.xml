@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dmm.ecommerceapp">
+
     <!-- Permission for voice search functionality -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -13,36 +13,25 @@
         android:theme="@style/Theme.EcommerceApp">
 
         <!-- Main Activity (Launcher) -->
-        <activity
-            android:name=".LoginActivity"
+        <activity android:name=".LoginActivity"
             android:exported="true"> <!-- Explicitly specify exported -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Other Activities -->
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ForgotPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+        </activity>
+
+        <!-- Other Activities -->
+        <activity android:name=".SignUpActivity" android:exported="false" />
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="false" />
         <activity android:name=".activities.CartActivity" />
         <activity android:name=".activities.SearchActivity" />
         <activity android:name=".activities.AdminActivity" />
         <activity android:name=".activities.AddProductActivity" />
         <activity android:name=".activities.DeleteProductActivity" />
         <activity android:name=".activities.EditProductActivity" />
-        <activity android:name=".activities.AddCategoryActivity" />
-        <activity android:name=".activities.EditCategoryActivity" />
-        <activity android:name=".activities.DeleteCategoryActivity" />
-        <activity
-            android:name=".CoursesActivity"
-            android:exported="false" />
-    </application>
+        <activity android:name=".CoursesActivity" android:exported="false" />
 
+    </application>
 </manifest>

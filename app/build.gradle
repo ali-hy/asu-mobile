@@ -62,14 +62,11 @@ dependencies {
     // Google Material Design
     implementation 'com.google.android.material:material:1.9.0'
 
-
-
-
-
-
-
     // Utility Libraries
     implementation libs.jbcrypt
+
+    // Barcode Scanner (ZXing)
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
     // Testing
     testImplementation libs.junit

@@ -3,7 +3,6 @@ package com.dmm.ecommerceapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.dmm.ecommerceapp.R;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.repositories.ProductRepository;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final int SPEECH_REQUEST_CODE = 1;
 
     private EditText searchInput;
-    private Button searchButton, voiceSearchButton;
+    private Button searchButton, voiceSearchButton, scanBarcodeButton;
     private LinearLayout resultsContainer;
 
     @Override
@@ -37,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
         searchInput = findViewById(R.id.search_input);
         searchButton = findViewById(R.id.search_button);
         voiceSearchButton = findViewById(R.id.voice_search_button);
+        scanBarcodeButton = findViewById(R.id.btn_open_scanner);
         resultsContainer = findViewById(R.id.results_container);
 
         // Set up text search
@@ -51,6 +53,9 @@ public class SearchActivity extends AppCompatActivity {
 
         // Set up voice search
         voiceSearchButton.setOnClickListener(v -> startVoiceSearch());
+
+        // Set up barcode scanning
+        scanBarcodeButton.setOnClickListener(v -> startBarcodeScanner());
     }
 
     // Search products by text
@@ -90,6 +95,17 @@ public class SearchActivity extends AppCompatActivity {
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
     }
 
+    // Start barcode scanner
+    private void startBarcodeScanner() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Scan a barcode");
+        integrator.setCameraId(0); // Use the back camera
+        integrator.setBeepEnabled(true);
+        integrator.setBarcodeImageEnabled(true);
+        integrator.initiateScan();
+    }
+
     // Handle voice search result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -99,6 +115,16 @@ public class SearchActivity extends AppCompatActivity {
             List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
             searchProducts(spokenText);
+        } else {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (result != null) {
+                if (result.getContents() == null) {
+                    Toast.makeText(this, "Scan cancelled", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    // Handle the scanned data as needed
+                }
+            }
         }
     }
 }
