@@ -19,6 +19,7 @@ import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.CartItemWithProduct;
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.models.User;
 import com.dmm.ecommerceapp.repositories.CartItemRepository;
 import com.dmm.ecommerceapp.services.UserService;
@@ -90,7 +91,16 @@ public class CartActivity extends AppCompatActivity {
 
             double totalPrice = calculateTotalPrice(cartItems);
             String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
+            for(CartItemWithProduct cartItemWithProduct : cartItems)
+            {
+                Sales sales = new Sales();
+                sales.setTotalAmount(totalPrice);
+                sales.setOrderDate(orderDate);
+                sales.setUserId(userService.getCurrentUser().getId());
+                sales.setQuantity(cartItemWithProduct.cartItem.getQuantity());
+                sales.setProductId(cartItemWithProduct.cartItem.getProductId());
+                cartViewModel.createNewSale(sales);
+            }
             Order newOrder = new Order();
             newOrder.setTotalAmount(totalPrice);
             newOrder.setOrderDate(orderDate);

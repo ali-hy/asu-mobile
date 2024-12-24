@@ -14,12 +14,13 @@ import com.dmm.ecommerceapp.data.ProductDao;
 import com.dmm.ecommerceapp.data.SalesDao;
 import com.dmm.ecommerceapp.data.UserDao;
 import com.dmm.ecommerceapp.models.CartItem;
+import com.dmm.ecommerceapp.models.Category; // Import Category
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.models.User;
 
-@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class}, version = 7, exportSchema = false)
+@Database(entities = {User.class, CartItem.class, Order.class, Product.class, Sales.class, Category.class}, version = 7, exportSchema = false) // Include Category
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase instance;
@@ -28,8 +29,13 @@ public abstract class AppDatabase extends RoomDatabase {
     static final Migration MIGRATION_6_7 = new Migration(6, 7) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            // Add the "dob" column to the "users" table
+            // Add the "dob" column to the "user_table"
             database.execSQL("ALTER TABLE user_table ADD COLUMN dob TEXT");
+
+            // If Category table was introduced here, create it
+            database.execSQL("CREATE TABLE IF NOT EXISTS categories_table (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "name TEXT NOT NULL)");
         }
     };
 
@@ -51,7 +57,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class,
                                     "ecommerce_database"
                             )
-                            .addMigrations(MIGRATION_5_6, MIGRATION_6_7) // Add both migrations
+                            .addMigrations(MIGRATION_5_6, MIGRATION_6_7) // Add migrations
                             .build();
                 }
             }

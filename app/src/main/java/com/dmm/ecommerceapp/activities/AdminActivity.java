@@ -2,6 +2,8 @@ package com.dmm.ecommerceapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.R;
@@ -24,6 +26,10 @@ public class AdminActivity extends AppCompatActivity {
         btnAddCategory = findViewById(R.id.btnAddCategory);
         btnEditCategory = findViewById(R.id.btnEditCategory);
         btnDeleteCategory = findViewById(R.id.btnDeleteCategory);
+        btnUserTransactions= findViewById(R.id.btnUserTransactions);
+        btnSpecificDateTransactions=findViewById(R.id.btnSpecificDateTransactions);
+        btnViewFeedback=findViewById(R.id.btnViewFeedback);
+        btnBestSellingProducts=findViewById(R.id.btnBestSellingProducts);
 
         // Set button click listeners
         btnAddProduct.setOnClickListener(view -> {
@@ -55,28 +61,28 @@ public class AdminActivity extends AppCompatActivity {
             Intent intent = new Intent(AdminActivity.this, DeleteCategoryActivity.class);
             startActivity(intent);
         });
-//
-//        btnUserTransactions.setOnClickListener(view -> {
-//            Intent intent = new Intent(AdminActivity.this, UserTransactionsReportActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        btnSpecificDateTransactions.setOnClickListener(view -> {
-//            Intent intent = new Intent(AdminActivity.this, DateTransactionsReportActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        btnViewFeedback.setOnClickListener(view -> {
-//            Intent intent = new Intent(AdminActivity.this, ViewFeedbackActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        btnBestSellingProducts.setOnClickListener(view -> {
-//            Intent intent = new Intent(AdminActivity.this, BestSellingProductsChartActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        // Optional: Display a welcome message
-//        Toast.makeText(this, "Welcome to the Admin Panel", Toast.LENGTH_SHORT).show();
+
+        btnUserTransactions.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, SalesReportActivity.class);
+            startActivity(intent);
+        });
+
+        btnSpecificDateTransactions.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, SalesReportActivityByDate.class);
+            startActivity(intent);
+        });
+
+        btnViewFeedback.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, ViewFeedbackActivity.class);
+            startActivity(intent);
+        });
+
+        btnBestSellingProducts.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, BestSellingProductsChartActivity.class);
+            startActivity(intent);
+        });
+
+        // Optional: Display a welcome message
+        Toast.makeText(this, "Welcome to the Admin Panel", Toast.LENGTH_SHORT).show();
     }
 }

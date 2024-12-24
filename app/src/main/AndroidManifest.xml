@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dmm.ecommerceapp">
 
     <!-- Permission for voice search functionality -->
@@ -10,11 +12,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EcommerceApp">
+        android:theme="@style/Theme.EcommerceApp"
+>
 
         <!-- Main Activity (Launcher) -->
-        <activity android:name=".LoginActivity"
-            android:exported="true"> <!-- Explicitly specify exported -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,7 +35,9 @@
         <activity android:name=".activities.AddProductActivity" />
         <activity android:name=".activities.DeleteProductActivity" />
         <activity android:name=".activities.EditProductActivity" />
+        <activity android:name=".activities.AddCategoryActivity" />
+        <activity android:name=".activities.EditCategoryActivity" />
+        <activity android:name=".activities.DeleteCategoryActivity" />
         <activity android:name=".CoursesActivity" android:exported="false" />
-
     </application>
 </manifest>
