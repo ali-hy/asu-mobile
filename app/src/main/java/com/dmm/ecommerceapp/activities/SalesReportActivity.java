@@ -23,11 +23,9 @@ import java.util.List;
 
 public class SalesReportActivity extends AppCompatActivity {
     private LinearLayout saleReportContainer;
-    private UserService userService;
     private EditText etuserId;
     private Button searchUserBtn;
     private SalesRepository salesRepository;
-    private ProductRepository productRepository;
 
 
     @Override
@@ -35,8 +33,6 @@ public class SalesReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_report);
         salesRepository = new SalesRepository(getApplication());
-        productRepository = new ProductRepository(getApplication());
-        userService = UserService.getInstance(getApplication());
         etuserId = findViewById(R.id.etUserId);
         searchUserBtn = findViewById(R.id.btnGenerateReport);
         saleReportContainer = findViewById(R.id.sales_items_container);

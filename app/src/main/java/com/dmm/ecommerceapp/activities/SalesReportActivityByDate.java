@@ -1,6 +1,8 @@
 package com.dmm.ecommerceapp.activities;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.dmm.ecommerceapp.R;
@@ -24,12 +27,10 @@ public class SalesReportActivityByDate extends AppCompatActivity {
     private UserService userService;
     private List<Sales> salesList;
     private EditText etSelectDate;
-    private Button btnSelectDate, btnGenerateReport;
+    private Button  btnGenerateReport;
     private TextView tvTotalSales;
 
     private SalesRepository salesRepository;
-    private ProductRepository productRepository;
-    private SalesReportActivity salesReportActivity;
 
 
     @Override
@@ -37,7 +38,6 @@ public class SalesReportActivityByDate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_by_date);
         salesRepository =new SalesRepository(getApplication());
-        productRepository =new ProductRepository(getApplication());
         // Initialize views
         etSelectDate = findViewById(R.id.etSelectDate);
         btnGenerateReport = findViewById(R.id.btnGenerateReport);
@@ -47,44 +47,52 @@ public class SalesReportActivityByDate extends AppCompatActivity {
         SalesRepository salesRepository = new SalesRepository(getApplication());
         salesList = new ArrayList<>();
 
+        btnGenerateReport.setOnClickListener(view -> {
+            if(etSelectDate==null)
+            {
+                Toast.makeText(this,"please enter a date",Toast.LENGTH_SHORT).show();
+            }
+            LiveData<List<Sales>> ldUserSalesByDate = returnSalesOfUserByDate(etSelectDate.getText().toString().trim());
 
+            ldUserSalesByDate.observe(this, salesList -> {
+                if (salesList == null || salesList.isEmpty()) {
+                    // If the data is null, return 0 or handle appropriately
+                    Toast.makeText(this, "no sales to show", Toast.LENGTH_SHORT).show();
+                } else {
+                    saleReportContainerByDate.setVisibility(View.VISIBLE); // Show cart items container
+                    displaySalesReportByDate(salesList); // Populate cart items dynamically
+                }
+            });
+        });
 
 
 
     }
 
+    private void displaySalesReportByDate(List<Sales> saleItems){
+        LayoutInflater inflater =LayoutInflater.from(this);
+        for (Sales sales : saleItems) {
+            View salesItemView = inflater.inflate(R.layout.item_sales_report_by_date, saleReportContainerByDate, false);
+            TextView tvUserId = salesItemView.findViewById(R.id.tvUserName);
+            tvUserId.setText(Long.toString(sales.getUserId()));
+            tvUserId.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
+            TextView tvSaleDetails = salesItemView.findViewById(R.id.tvProductDetails);
+            tvSaleDetails.setText(Double.toString(sales.getTotalAmount()));
+            tvSaleDetails.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-    private void generateReport() {
-        String selectedDate = etSelectDate.getText().toString().trim();
+            TextView tvDate = salesItemView.findViewById(R.id.tvSaleDate);
+            tvDate.setText(sales.getOrderDate());
+            tvDate.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        if (selectedDate.isEmpty()) {
-            Toast.makeText(this, "Please select a date", Toast.LENGTH_SHORT).show();
-            return;
+            saleReportContainerByDate.addView(salesItemView);
         }
 
-        // Fetch sales data using the repository
-        salesRepository.searchSalesByDate(selectedDate).observe(this, new Observer<List<Sales>>() {
-            @Override
-            public void onChanged(List<Sales> sales) {
-//                if (sales == null || sales.isEmpty()) {
-//                    Toast.makeText(GenerateReportActivity.this, "No sales found for the selected date", Toast.LENGTH_SHORT).show();
-//                    salesList.clear();
-//                    salesReportActivity.notifyDataSetChanged();
-//                    tvTotalSales.setText("Total Sales: $0.00");
-//                    return;
-//                }
-
-                // Populate sales list
-                salesList.clear();
-                salesList.addAll(sales);
-                double totalSales = 0.0;
-
-
-                // Update UI
-//                salesReportActivity.notifyDataSetChanged();
-                tvTotalSales.setText(String.format("Total Sales: $%.2f", totalSales));
-            }
-        });
     }
+    public LiveData<List<Sales>> returnSalesOfUserByDate(String date)
+    {
+        return salesRepository.searchSalesByDate(date);
+    }
+
+
 }
