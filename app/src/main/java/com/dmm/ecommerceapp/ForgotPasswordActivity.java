@@ -95,14 +95,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 if (!isValid) {
                                     Toast.makeText(ForgotPasswordActivity.this, "Invalid security answer!", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    userService.updatePassword(email, newPassword,() -> {
-                                        Toast.makeText(ForgotPasswordActivity.this, "Password reset successful!", Toast.LENGTH_SHORT).show();
-                                        finish(); // Close ForgotPasswordActivity
-                                        return null;
-                                    } , e -> {
+                                    userService.updatePassword(email, newPassword, e -> {
                                         Toast.makeText(ForgotPasswordActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                         return null;
                                     });
+                                    Toast.makeText(ForgotPasswordActivity.this, "Password reset successful!", Toast.LENGTH_SHORT).show();
+                                    finish(); // Close ForgotPasswordActivity
                                 }
                             }
 

@@ -1,0 +1,35 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@android:color/white">
+
+    <!-- User Information -->
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:textStyle="bold"
+        android:textSize="16sp" />
+
+    <!-- Date of Sale -->
+    <TextView
+        android:id="@+id/tvSaleDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date: YYYY-MM-DD"
+        android:textSize="14sp"
+        android:paddingTop="4dp" />
+
+    <!-- Product Details -->
+    <TextView
+        android:id="@+id/tvProductDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Product: Product Name (Qty: 5) - $100.00"
+        android:textSize="14sp"
+        android:paddingTop="4dp" />
+</LinearLayout>

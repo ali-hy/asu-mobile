@@ -58,5 +58,4 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ProductDao productDao();
     public abstract SalesDao salesDao();
     public abstract CategoryDao categoryDao();
-
 }

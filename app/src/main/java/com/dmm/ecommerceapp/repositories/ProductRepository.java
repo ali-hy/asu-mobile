@@ -58,6 +58,7 @@ import com.dmm.ecommerceapp.data.EcommerceDatabase;
 import com.dmm.ecommerceapp.data.ProductDao;
 import com.dmm.ecommerceapp.models.Category;
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.utils.IFunction;
 import com.dmm.ecommerceapp.utils.IFunctionNoParam;
 
@@ -132,5 +133,23 @@ public class ProductRepository {
                 productDao.delete(product);
             }
         });
+    }
+    public String getProductNameById(long id)
+    {productDao.getNameById(id);
+
+        LiveData<List<Product>> product = productDao.getNameById(id);
+
+        List<Product> listProducts= product.getValue();
+
+        if (listProducts == null) {
+            // If the data is null, return 0 or handle appropriately
+            return "";
+        }
+        String name = "";
+        for (Product ProductItem : listProducts) {
+            name = ProductItem.getName();
+            break;// Assuming Sales has a getQuantity() method
+        }
+        return name;
     }
 }

@@ -8,16 +8,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.dmm.ecommerceapp.R;
 import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.CartItemWithProduct;
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.models.Sales;
+import com.dmm.ecommerceapp.models.User;
+import com.dmm.ecommerceapp.repositories.CartItemRepository;
 import com.dmm.ecommerceapp.services.UserService;
 import com.dmm.ecommerceapp.viewmodels.CartViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,11 +35,12 @@ public class CartActivity extends AppCompatActivity {
 
     private LinearLayout cartItemsContainer;
     private TextView tvTotalPrice;
-    private TextView tvEmptyCart;
-    private Button btnCheckout, btnClearCart;
+    private TextView tvEmptyCart; // Added for the empty cart message
+    private Button btnCheckout;
+    private Button btnClearCart;
     private CartViewModel cartViewModel;
-    private UserService userService;
     private List<CartItemWithProduct> cartItems;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +56,8 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btn_checkout);
         btnClearCart = findViewById(R.id.btn_clear_cart);
 
-        // Set up ViewModel
-        cartViewModel = new CartViewModel(getApplication());
+        // Initialize ViewModel
+        cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
         // Observe cart items
         cartViewModel.getCartItemsByUserId(userService.getCurrentUser().getId()).observe(this, items -> {
@@ -70,14 +78,24 @@ public class CartActivity extends AppCompatActivity {
 
             double totalPrice = calculateTotalPrice(cartItems);
             String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            for(CartItemWithProduct cartItemWithProduct : cartItems)
+            {
+                Sales sales = new Sales();
+                sales.setTotalAmount(totalPrice);
+                sales.setOrderDate(orderDate);
+                sales.setUserId(userService.getCurrentUser().getId());
+                sales.setQuantity(cartItemWithProduct.cartItem.getQuantity());
+                sales.setProductId(cartItemWithProduct.cartItem.getProductId());
+                cartViewModel.createNewSale(sales);
+            }
+            Order newOrder = new Order();
+            newOrder.setTotalAmount(totalPrice);
+            newOrder.setOrderDate(orderDate);
 
-            Order order = new Order();
-            order.setTotalAmount(totalPrice);
-            order.setOrderDate(orderDate);
+            cartViewModel.checkout(newOrder);
+            Snackbar.make(findViewById(android.R.id.content), "Order placed successfully!", Snackbar.LENGTH_LONG).show();
 
-            cartViewModel.checkout(order);
-            Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
-            cartViewModel.clearCart();
+            cartViewModel.clearCart(); // Clear the cart after checkout
             showEmptyCart();
         });
 

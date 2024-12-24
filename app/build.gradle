@@ -64,6 +64,12 @@ dependencies {
     // Google Material Design
     implementation 'com.google.android.material:material:1.9.0'
 
+    // MPAndroidChart Library
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // AnyChart Library
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+
     // Utility Libraries
     implementation libs.jbcrypt
 

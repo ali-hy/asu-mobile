@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dmm.ecommerceapp">
 
-    <!-- Permissions for voice search functionality and barcode scanning -->
+    <!-- Permission for voice search functionality -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- Declare camera hardware feature -->
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -22,24 +17,17 @@
         <!-- Main Activity (Launcher) -->
         <activity
             android:name=".LoginActivity"
-            android:exported="true"> <!-- Explicitly specify exported -->
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- Other Activities -->
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ForgotPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+        <activity android:name=".SignUpActivity" android:exported="false" />
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="false" />
         <activity android:name=".activities.CartActivity" />
         <activity android:name=".activities.SearchActivity" />
         <activity android:name=".activities.AdminActivity" />
@@ -49,9 +37,6 @@
         <activity android:name=".activities.AddCategoryActivity" />
         <activity android:name=".activities.EditCategoryActivity" />
         <activity android:name=".activities.DeleteCategoryActivity" />
-        <activity
-            android:name=".CoursesActivity"
-            android:exported="false" />
+        <activity android:name=".CoursesActivity" android:exported="false" />
     </application>
-
 </manifest>

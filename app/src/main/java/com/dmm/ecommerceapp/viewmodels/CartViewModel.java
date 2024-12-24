@@ -21,6 +21,7 @@ import java.util.List;
 public class CartViewModel extends AndroidViewModel {
 
     private final CartItemRepository cartRepository;
+    private final SalesRepository salesRepository;
     private final OrderRepository orderRepository;
     private final SalesRepository salesRepository;
     private final MutableLiveData<List<CartItem>> cartItemsLiveData;
@@ -29,6 +30,7 @@ public class CartViewModel extends AndroidViewModel {
     public CartViewModel(@NonNull Application application) {
         super(application);
         cartRepository = new CartItemRepository(application);
+        salesRepository = new SalesRepository(application);
         orderRepository = new OrderRepository(application);
         cartItemsLiveData = new MutableLiveData<>();
         cartTotalLiveData = new MutableLiveData<>(0.0);
@@ -112,6 +114,10 @@ public class CartViewModel extends AndroidViewModel {
         calculateCartTotal(new ArrayList<>()); // Reset total price
     }
 
+    public void createNewSale(Sales newOrder) {
+        // Insert the new order into the database
+        salesRepository.insert(newOrder);
+    }
     public void checkout(Order newOrder) {
         // Insert the new order into the database
         orderRepository.insertOrder(newOrder);
@@ -123,6 +129,5 @@ public class CartViewModel extends AndroidViewModel {
         // Insert the new order into the database
         salesRepository.insert(newOrder);
     }
-
 
 }

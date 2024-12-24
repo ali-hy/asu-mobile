@@ -30,4 +30,7 @@ public interface ProductDao {
 
     @Query("SELECT * FROM product_table WHERE categoryId = :categoryId ORDER BY name ASC")
     LiveData<List<Product>> getByCategory(long categoryId);
+
+    @Query("SELECT * FROM product_table WHERE id = :id")
+    LiveData<List<Product>> getNameById(long id);
 }
