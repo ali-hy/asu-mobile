@@ -7,7 +7,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-
 import com.dmm.ecommerceapp.models.Sales;
 
 import java.util.List;
@@ -29,10 +28,10 @@ public interface SalesDao {
     @Query("SELECT * FROM sales_table WHERE productId == :productId")
     LiveData<List<Sales>> searchSalesByProduct(long productId);
 
-    @Query("SELECT * FROM sales_table WHERE userId == :searchQuery")
-    LiveData<List<Sales>> searchSalesByUser(long searchQuery);
+    @Query("SELECT * FROM sales_table WHERE userId = :userId")
+    LiveData<List<Sales>> searchSalesByUser(long userId);
 
-    @Query("SELECT * FROM sales_table WHERE date LIKE :searchQuery")
+    @Query("SELECT * FROM sales_table WHERE orderDate LIKE :searchQuery")
     LiveData<List<Sales>> searchSalesByDate(String searchQuery);
 
     @Query("SELECT * FROM sales_table WHERE id = :productId")

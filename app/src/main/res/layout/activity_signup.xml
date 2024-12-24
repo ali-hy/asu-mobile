@@ -44,6 +44,23 @@
         android:inputType="text"
         android:layout_marginBottom="16dp" />
 
+    <TextView
+        android:id="@+id/tvDob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date of Birth"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnSelectDob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Date of Birth"
+        android:layout_marginBottom="16dp" />
+
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"

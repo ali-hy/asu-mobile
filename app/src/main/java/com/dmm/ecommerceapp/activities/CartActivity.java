@@ -8,10 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.dmm.ecommerceapp.R;
@@ -19,8 +18,7 @@ import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.CartItemWithProduct;
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.models.Product;
-import com.dmm.ecommerceapp.models.User;
-import com.dmm.ecommerceapp.repositories.CartItemRepository;
+import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.services.UserService;
 import com.dmm.ecommerceapp.viewmodels.CartViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,55 +40,46 @@ public class CartActivity extends AppCompatActivity {
     private UserService userService;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        userService = UserService.getInstance(this);
+        userService = UserService.getInstance(getApplication());
 
-        // Initialize Views
+        // Initialize views
         cartItemsContainer = findViewById(R.id.cart_items_container);
         tvTotalPrice = findViewById(R.id.tv_total_price);
-        tvEmptyCart = findViewById(R.id.tv_empty_cart); // Initialize tvEmptyCart
+        tvEmptyCart = findViewById(R.id.tv_empty_cart);
         btnCheckout = findViewById(R.id.btn_checkout);
         btnClearCart = findViewById(R.id.btn_clear_cart);
 
         // Initialize ViewModel
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
-        // Observe Cart Items
-        cartViewModel
-                .getCartItemsByUserId(userService.getCurrentUser().getId())
-                .observe(this, items -> {
-                    cartItems = items;
+        // Observe cart items
+        cartViewModel.getCartItemsByUserId(userService.getCurrentUser().getId()).observe(this, items -> {
+            cartItems = items;
+            if (items == null || items.isEmpty()) {
+                showEmptyCart();
+            } else {
+                showCartItems(items);
+            }
+        });
 
-                    if (items == null || items.isEmpty()) {
-                        tvEmptyCart.setVisibility(View.VISIBLE); // Show empty cart message
-                        cartItemsContainer.setVisibility(View.GONE); // Hide cart items container
-                        btnCheckout.setEnabled(false); // Disable checkout button
-                    } else {
-                        tvEmptyCart.setVisibility(View.GONE); // Hide empty cart message
-                        cartItemsContainer.setVisibility(View.VISIBLE); // Show cart items container
-                        displayCartItems(items); // Populate cart items dynamically
-                        btnCheckout.setEnabled(true); // Enable checkout button
-                    }
-                });
-
-        // Observe Total Price
-        cartViewModel.getCartTotal().observe(this, total ->
-                tvTotalPrice.setText("Total: $" + String.format("%.2f", total))
-        );
-
-        // Checkout Button Action
+        // Set up checkout button
         btnCheckout.setOnClickListener(v -> {
             if (cartItems == null || cartItems.isEmpty()) {
-                Toast.makeText(this, "Your cart is empty! Add items before checkout.", Toast.LENGTH_SHORT).show();
-                return; // Exit if the cart is empty
+                Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
+                return;
             }
 
             double totalPrice = calculateTotalPrice(cartItems);
             String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
+            for(CartItemWithProduct cartItemWithProduct : cartItems)
+            {
+                Sales sales = getSales(cartItemWithProduct, orderDate);
+                cartViewModel.createNewSale(sales);
+            }
             Order newOrder = new Order();
             newOrder.setTotalAmount(totalPrice);
             newOrder.setOrderDate(orderDate);
@@ -99,80 +88,85 @@ public class CartActivity extends AppCompatActivity {
             Snackbar.make(findViewById(android.R.id.content), "Order placed successfully!", Snackbar.LENGTH_LONG).show();
 
             cartViewModel.clearCart(); // Clear the cart after checkout
+            showEmptyCart();
         });
 
-        // Clear Cart Button Action
-        btnClearCart.setOnClickListener(v -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Clear Cart")
-                    .setMessage("Are you sure you want to clear your cart?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        cartViewModel.clearCart();
-                        Toast.makeText(this, "Cart cleared successfully!", Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        });
+        // Set up clear cart button
+        btnClearCart.setOnClickListener(v -> new AlertDialog.Builder(this)
+                .setTitle("Clear Cart")
+                .setMessage("Are you sure you want to clear your cart?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    cartViewModel.clearCart();
+                    showEmptyCart();
+                    Toast.makeText(this, "Cart cleared successfully!", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("No", null)
+                .show());
     }
 
-    private void getAndDisplayCartItems() {
-        CartItemRepository cartItemRepository = new CartItemRepository(getApplication());
-        LiveData<List<CartItemWithProduct>> allCartItems = cartItemRepository.getCartItemsByUserID(
-                userService.getCurrentUser().getId()
+    @NonNull
+    private Sales getSales(CartItemWithProduct cartItemWithProduct, String orderDate) {
+        Product product = cartItemWithProduct.product;
+        CartItem cartItem = cartItemWithProduct.cartItem;
+
+        return new Sales(
+                product.getName(),
+                userService.getCurrentUser().getId(),
+                product.getId(),
+                orderDate,
+                0,
+                "",
+                cartItem.getQuantity(),
+                product.getPrice()
         );
-        allCartItems.observe(this, cartItems -> {
-            if (cartItems == null || cartItems.isEmpty()) {
-                tvEmptyCart.setVisibility(View.VISIBLE); // Show empty cart message
-                cartItemsContainer.setVisibility(View.GONE); // Hide cart items container
-                btnCheckout.setEnabled(false); // Disable checkout button
-            } else {
-                tvEmptyCart.setVisibility(View.GONE); // Hide empty cart message
-                cartItemsContainer.setVisibility(View.VISIBLE); // Show cart items container
-                displayCartItems(cartItems); // Populate cart items dynamically
-                btnCheckout.setEnabled(true); // Enable checkout button
-            }
-        });
     }
 
-    private void displayCartItems(List<CartItemWithProduct> cartItems) {
-        cartItemsContainer.removeAllViews();
+    private void showEmptyCart() {
+        tvEmptyCart.setVisibility(View.VISIBLE);
+        cartItemsContainer.setVisibility(View.GONE);
+        btnCheckout.setEnabled(false);
+        tvTotalPrice.setText("Total: $0.00");
+    }
 
+    private void showCartItems(List<CartItemWithProduct> items) {
+        tvEmptyCart.setVisibility(View.GONE);
+        cartItemsContainer.setVisibility(View.VISIBLE);
+        btnCheckout.setEnabled(true);
+
+        cartItemsContainer.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        for (CartItemWithProduct cartItemWithProduct : cartItems) {
-            // Inflate the product item layout
+        for (CartItemWithProduct item : items) {
             View cartItemView = inflater.inflate(R.layout.activity_item_cart, cartItemsContainer, false);
 
-            CartItem cartItem = cartItemWithProduct.cartItem;
-            Product product = cartItemWithProduct.product;
-
             TextView tvProductName = cartItemView.findViewById(R.id.tv_product_name);
-            tvProductName.setText(product.getName());
-            tvProductName.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-            Button btnDecreaseQuantity = cartItemView.findViewById(R.id.btn_decrease_quantity);
-            btnDecreaseQuantity.setOnClickListener(v -> cartViewModel.decreaseQuantity(cartItem));
-
             TextView tvQuantity = cartItemView.findViewById(R.id.tv_quantity);
-            tvQuantity.setText("Qty: " + cartItem.getQuantity());
-            tvQuantity.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-
             Button btnRemove = cartItemView.findViewById(R.id.btn_remove);
+            Button btnIncreaseQuantity = cartItemView.findViewById(R.id.btn_increase_quantity);
+            Button btnDecreaseQuantity = cartItemView.findViewById(R.id.btn_decrease_quantity);
+
+            Product product = item.product;
+            CartItem cartItem = item.cartItem;
+
+            tvProductName.setText(product.getName());
+            tvQuantity.setText(String.valueOf(cartItem.getQuantity()));
+
+            btnIncreaseQuantity.setOnClickListener(v -> cartViewModel.increaseQuantity(cartItem));
+            btnDecreaseQuantity.setOnClickListener(v -> cartViewModel.decreaseQuantity(cartItem));
             btnRemove.setOnClickListener(v -> cartViewModel.removeCartItem(cartItem));
 
-            Button btnIncreaseQuantity = cartItemView.findViewById(R.id.btn_increase_quantity);
-            btnIncreaseQuantity.setOnClickListener(v -> cartViewModel.increaseQuantity(cartItem));
-
-            // Add cart item layout to the container
             cartItemsContainer.addView(cartItemView);
         }
+
+        double totalPrice = calculateTotalPrice(items);
+        tvTotalPrice.setText("Total: $" + String.format("%.2f", totalPrice));
     }
 
     private double calculateTotalPrice(List<CartItemWithProduct> cartItems) {
         double totalPrice = 0.0;
-        for (CartItemWithProduct cartItemWithProduct : cartItems) {
-            CartItem cartItem = cartItemWithProduct.cartItem;
-            totalPrice += cartItem.getQuantity() * cartItem.getTotalPrice();
+        for (CartItemWithProduct item : cartItems) {
+            CartItem cartItem = item.cartItem;
+            totalPrice += cartItem.getQuantity() * item.product.getPrice();
         }
         return totalPrice;
     }

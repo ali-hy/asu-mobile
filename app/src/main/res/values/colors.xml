@@ -24,5 +24,7 @@
     <!-- Accent Colors -->
     <color name="accent_color">#FF5722</color>
 
+    <!-- Primary and Teal Colors -->
     <color name="primary">#6200EE</color>
+    <color name="teal_200">#03DAC5</color> <!-- Added teal_200 -->
 </resources>

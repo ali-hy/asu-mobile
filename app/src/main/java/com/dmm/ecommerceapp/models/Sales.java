@@ -8,12 +8,45 @@ public class Sales {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+    private String name;
     private long userId;
     private long productId;
-    private long date;
+    private String orderDate;
     private double rating;
     private String feedback;
     private int quantity;
+    private double totalAmount;
+
+    public Sales() {
+    }
+
+    public Sales(String name, long userId, long productId, String orderDate, double rating, String feedback, int quantity, double totalAmount) {
+        this.name = name;
+        this.userId = userId;
+        this.productId = productId;
+        this.orderDate = orderDate;
+        this.rating = rating;
+        this.feedback = feedback;
+        this.quantity = quantity;
+        this.totalAmount = totalAmount;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
 
     public long getId() {
         return id;
@@ -47,12 +80,12 @@ public class Sales {
         this.rating = rating;
     }
 
-    public long getDate() {
-        return date;
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public void setDate(long date) {
-        this.date = date;
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public long getProductId() {
@@ -70,8 +103,6 @@ public class Sales {
     public void setUserId(long userId) {
         this.userId = userId;
     }
-
-
 
 
 }

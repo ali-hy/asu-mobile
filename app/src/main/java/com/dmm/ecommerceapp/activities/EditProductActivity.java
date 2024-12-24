@@ -8,9 +8,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.R;
-import com.dmm.ecommerceapp.data.ProductDao;
-import com.dmm.ecommerceapp.db.AppDatabase;
-import com.dmm.ecommerceapp.db.DatabaseHelper;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.repositories.ProductRepository;
 

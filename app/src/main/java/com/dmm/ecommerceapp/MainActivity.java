@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userService = UserService.getInstance(this);
+        userService = UserService.getInstance(getApplication());
         sCategory = findViewById(R.id.sCategory);
         categoryRepository = new CategoryRepository(getApplication());
 

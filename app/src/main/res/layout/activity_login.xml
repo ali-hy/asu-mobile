@@ -45,5 +45,11 @@
         android:layout_height="wrap_content"
         android:text="Forgot Password"
         android:layout_marginBottom="12dp" />
+    <CheckBox
+        android:id="@+id/cbRememberMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember Me"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>

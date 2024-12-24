@@ -27,35 +27,28 @@
             android:id="@+id/cart_items_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical" />
 
-<!--        Total price and checkout -->
-        <LinearLayout
+        <!-- Total Price -->
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total: $0.00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <!-- Checkout Button -->
+        <Button
+            android:id="@+id/btn_checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end"
-            android:paddingTop="16dp">
-
-            <TextView
-                android:id="@+id/tv_total_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total: $0.00"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="16dp" />
-
-            <Button
-                android:id="@+id/btn_checkout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Checkout"
-                android:enabled="false"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#6200EE" />
-        </LinearLayout>
+            android:text="Checkout"
+            android:layout_marginTop="16dp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#6200EE"
+            android:enabled="false" />
 
         <!-- Clear Cart Button -->
         <Button

@@ -54,14 +54,12 @@ import android.os.Looper;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.dmm.ecommerceapp.data.EcommerceDatabase;
 import com.dmm.ecommerceapp.data.ProductDao;
-import com.dmm.ecommerceapp.models.Category;
+import com.dmm.ecommerceapp.db.AppDatabase;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.utils.IFunction;
 import com.dmm.ecommerceapp.utils.IFunctionNoParam;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,7 +73,7 @@ public class ProductRepository {
     private final MutableLiveData<List<Product>> inMemoryLiveData = new MutableLiveData<>();
 
     public ProductRepository(Application application) {
-        EcommerceDatabase database = EcommerceDatabase.getInstance(application);
+        AppDatabase database = AppDatabase.getInstance(application);
         productDao = database.productDao();
         allProducts = productDao.getAllProducts();
     }
@@ -106,9 +104,9 @@ public class ProductRepository {
         executorService.execute(() -> {
             try {
                 productDao.update(product);
-                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
+                new Handler(Looper.getMainLooper()).post(onSuccess::apply);
             } catch (Exception e) {
-                new Handler(Looper.getMainLooper()).post(() -> onError.apply());
+                new Handler(Looper.getMainLooper()).post(onError::apply);
             }
         });
     }
@@ -126,7 +124,7 @@ public class ProductRepository {
         executorService.execute(() -> {
             try {
                 productDao.delete(product);
-                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
+                new Handler(Looper.getMainLooper()).post(onSuccess::apply);
                 ;
             } catch (Exception e) {
                 productDao.delete(product);

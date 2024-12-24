@@ -4,10 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.dmm.ecommerceapp.data.EcommerceDatabase;
-import com.dmm.ecommerceapp.data.ProductDao;
 import com.dmm.ecommerceapp.data.SalesDao;
-import com.dmm.ecommerceapp.models.Product;
+import com.dmm.ecommerceapp.db.AppDatabase;
 import com.dmm.ecommerceapp.models.Sales;
 import com.dmm.ecommerceapp.utils.FeedbackAndRatings;
 
@@ -22,7 +20,7 @@ public class SalesRepository {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public SalesRepository(Application application) {
-        EcommerceDatabase database = EcommerceDatabase.getInstance(application);
+        AppDatabase database = AppDatabase.getInstance(application);
         salesDao = database.salesDao();
         allSales = salesDao.getAllSales();
     }
@@ -59,7 +57,7 @@ public class SalesRepository {
     public int returnQuantityByProductId(long productId) {
         LiveData<List<Sales>> sales = salesDao.returnListQuantityByProductId(productId);
 
-        List<Sales> listSales= sales.getValue();
+        List<Sales> listSales = sales.getValue();
         if (listSales == null) {
             // If the data is null, return 0 or handle appropriately
             return 0;
@@ -101,8 +99,7 @@ public class SalesRepository {
         return new FeedbackAndRatings(feedback, ratings);
     }
 
-    public FeedbackAndRatings getFeedbackByDateForAllUsers(String date)
-    {
+    public FeedbackAndRatings getFeedbackByDateForAllUsers(String date) {
         // Get the LiveData object from the DAO
         LiveData<List<Sales>> sales = salesDao.searchSalesByDate(date);
 
@@ -120,8 +117,8 @@ public class SalesRepository {
         // Iterate through the sales and collect feedback and ratings for the specified user
         for (Sales saleItem : listSales) {
 
-                feedback.add(saleItem.getFeedback());
-                ratings.add(saleItem.getRating());
+            feedback.add(saleItem.getFeedback());
+            ratings.add(saleItem.getRating());
 
         }
 

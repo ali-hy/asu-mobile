@@ -79,11 +79,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "product_table", foreignKeys = @ForeignKey(
-        entity = Category.class,
-        parentColumns = "id",
-        childColumns = "categoryId"
-))
+@Entity(tableName = "product_table")
 public class Product {
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -96,8 +92,7 @@ public class Product {
     private int quantity;
 
     // Default constructor (required for Room)
-    public Product() {
-    }
+    public Product() {}
 
     // Full parameterized constructor
     public Product(String name, String description, double price, int quantity, String barcode, String imageUrl) {
@@ -114,8 +109,8 @@ public class Product {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.barcode = null; // Optional, can be set later
-        this.imageUrl = null; // Optional, can be set later
+        this.barcode = null;
+        this.imageUrl = null;
     }
 
     public Product(String name, double price, String description, int quantity, long categoryId) {
