@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dmm.ecommerceapp.R;
-import com.dmm.ecommerceapp.db.DatabaseHelper;
 import com.dmm.ecommerceapp.models.Category;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.repositories.CategoryRepository;
@@ -86,6 +85,6 @@ public class AddProductActivity extends AppCompatActivity {
         }, (e) -> {
             Toast.makeText(this, "Failed to Add Product", Toast.LENGTH_SHORT).show();
             return null;
-        }); // Assuming category ID is 1 for now
+        });
     }
 }
