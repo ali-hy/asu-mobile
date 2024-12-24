@@ -1,6 +1,5 @@
 package com.dmm.ecommerceapp.activities;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,8 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.dmm.ecommerceapp.R;
 import com.dmm.ecommerceapp.models.Sales;
@@ -20,7 +17,6 @@ import com.dmm.ecommerceapp.repositories.SalesRepository;
 import com.dmm.ecommerceapp.services.UserService;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class SalesReportActivityByDate extends AppCompatActivity {
@@ -71,13 +67,13 @@ public class SalesReportActivityByDate extends AppCompatActivity {
         salesRepository.searchSalesByDate(selectedDate).observe(this, new Observer<List<Sales>>() {
             @Override
             public void onChanged(List<Sales> sales) {
-                if (sales == null || sales.isEmpty()) {
-                    Toast.makeText(GenerateReportActivity.this, "No sales found for the selected date", Toast.LENGTH_SHORT).show();
-                    salesList.clear();
-                    salesReportActivity.notifyDataSetChanged();
-                    tvTotalSales.setText("Total Sales: $0.00");
-                    return;
-                }
+//                if (sales == null || sales.isEmpty()) {
+//                    Toast.makeText(GenerateReportActivity.this, "No sales found for the selected date", Toast.LENGTH_SHORT).show();
+//                    salesList.clear();
+//                    salesReportActivity.notifyDataSetChanged();
+//                    tvTotalSales.setText("Total Sales: $0.00");
+//                    return;
+//                }
 
                 // Populate sales list
                 salesList.clear();
@@ -86,7 +82,7 @@ public class SalesReportActivityByDate extends AppCompatActivity {
 
 
                 // Update UI
-                salesReportActivity.notifyDataSetChanged();
+//                salesReportActivity.notifyDataSetChanged();
                 tvTotalSales.setText(String.format("Total Sales: $%.2f", totalSales));
             }
         });

@@ -8,10 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.dmm.ecommerceapp.R;
@@ -20,8 +19,6 @@ import com.dmm.ecommerceapp.models.CartItemWithProduct;
 import com.dmm.ecommerceapp.models.Order;
 import com.dmm.ecommerceapp.models.Product;
 import com.dmm.ecommerceapp.models.Sales;
-import com.dmm.ecommerceapp.models.User;
-import com.dmm.ecommerceapp.repositories.CartItemRepository;
 import com.dmm.ecommerceapp.services.UserService;
 import com.dmm.ecommerceapp.viewmodels.CartViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,7 +44,7 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        userService = UserService.getInstance(this);
+        userService = UserService.getInstance(getApplication());
 
         // Initialize views
         cartItemsContainer = findViewById(R.id.cart_items_container);
@@ -80,12 +77,7 @@ public class CartActivity extends AppCompatActivity {
             String orderDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
             for(CartItemWithProduct cartItemWithProduct : cartItems)
             {
-                Sales sales = new Sales();
-                sales.setTotalAmount(totalPrice);
-                sales.setOrderDate(orderDate);
-                sales.setUserId(userService.getCurrentUser().getId());
-                sales.setQuantity(cartItemWithProduct.cartItem.getQuantity());
-                sales.setProductId(cartItemWithProduct.cartItem.getProductId());
+                Sales sales = getSales(cartItemWithProduct, orderDate);
                 cartViewModel.createNewSale(sales);
             }
             Order newOrder = new Order();
@@ -110,6 +102,23 @@ public class CartActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show());
+    }
+
+    @NonNull
+    private Sales getSales(CartItemWithProduct cartItemWithProduct, String orderDate) {
+        Product product = cartItemWithProduct.product;
+        CartItem cartItem = cartItemWithProduct.cartItem;
+
+        return new Sales(
+                product.getName(),
+                userService.getCurrentUser().getId(),
+                product.getId(),
+                orderDate,
+                0,
+                "",
+                cartItem.getQuantity(),
+                product.getPrice()
+        );
     }
 
     private void showEmptyCart() {

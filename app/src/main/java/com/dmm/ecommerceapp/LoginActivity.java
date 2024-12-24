@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userService = UserService.getInstance(this);
+        userService = UserService.getInstance(getApplication());
         sharedPreferences = getSharedPreferences("EcommerceAppPrefs", MODE_PRIVATE);
 
         // Initialize Views

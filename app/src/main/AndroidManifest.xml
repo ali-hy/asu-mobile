@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.dmm.ecommerceapp">
 
     <!-- Permission for voice search functionality -->
@@ -37,6 +36,10 @@
         <activity android:name=".activities.AddCategoryActivity" />
         <activity android:name=".activities.EditCategoryActivity" />
         <activity android:name=".activities.DeleteCategoryActivity" />
+        <activity android:name=".activities.BestSellingProductsChartActivity" />
+        <activity android:name=".activities.SalesReportActivity" />
+        <activity android:name=".activities.SalesReportActivityByDate" />
+        <activity android:name=".activities.UserActivity" />
         <activity android:name=".CoursesActivity" android:exported="false" />
     </application>
 </manifest>

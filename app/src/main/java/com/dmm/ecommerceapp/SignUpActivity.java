@@ -3,7 +3,6 @@ package com.dmm.ecommerceapp;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dmm.ecommerceapp.models.User;
 import com.dmm.ecommerceapp.services.UserService;
 
 import java.util.Calendar;
@@ -35,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         // Initialize UserService
-        UserService userService = UserService.getInstance(this);
+        UserService userService = UserService.getInstance(getApplication());
 
         // Initialize UI elements
         etName = findViewById(R.id.etName);

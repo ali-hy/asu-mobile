@@ -17,6 +17,20 @@ public class Sales {
     private int quantity;
     private double totalAmount;
 
+    public Sales() {
+    }
+
+    public Sales(String name, long userId, long productId, String orderDate, double rating, String feedback, int quantity, double totalAmount) {
+        this.name = name;
+        this.userId = userId;
+        this.productId = productId;
+        this.orderDate = orderDate;
+        this.rating = rating;
+        this.feedback = feedback;
+        this.quantity = quantity;
+        this.totalAmount = totalAmount;
+    }
+
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -28,10 +42,10 @@ public class Sales {
     public void setName(String name) {
         this.name = name;
     }
+
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
-
 
 
     public long getId() {
@@ -89,8 +103,6 @@ public class Sales {
     public void setUserId(long userId) {
         this.userId = userId;
     }
-
-
 
 
 }

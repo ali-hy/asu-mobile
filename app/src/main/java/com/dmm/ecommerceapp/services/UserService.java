@@ -1,9 +1,9 @@
 package com.dmm.ecommerceapp.services;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Application;
 
-import com.dmm.ecommerceapp.db.DbClient;
+import com.dmm.ecommerceapp.db.AppDatabase;
 import com.dmm.ecommerceapp.models.User;
 import com.dmm.ecommerceapp.utils.IFunction;
 import com.dmm.ecommerceapp.utils.IFunctionNoParam;
@@ -21,20 +21,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class UserService {
     public static UserService instance;
-    DbClient dbClient;
+    AppDatabase appDatabase;
 
     User currentUser;
 
-    UserService(Context context) {
-        dbClient = DbClient.getInstance(context);
+    UserService(Application application) {
+        appDatabase = AppDatabase.getInstance(application);
     }
 
-    public static UserService getInstance(Context context) {
+    public static UserService getInstance(Application application) {
         if (instance == null) {
-            instance = new UserService(context);
+            instance = new UserService(application);
         }
 
-        instance.dbClient = DbClient.getInstance(context);
         return instance;
     }
 
@@ -48,7 +47,7 @@ public class UserService {
         user.setSecurityAnswer(securityAnswer);
         user.setDob(dob); // Set the Date of Birth
 
-        return dbClient.userDao().insert(user)
+        return appDatabase.userDao().insert(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -85,12 +84,12 @@ public class UserService {
     }
 
     public Maybe<User> getUserByEmail(String email) {
-        return dbClient.userDao().getUserByEmail(email)
+        return appDatabase.userDao().getUserByEmail(email)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Maybe<Boolean> checkEmailExists(String email) {
-        return dbClient.userDao().getUserByEmail(email).map(user -> user != null)
+        return appDatabase.userDao().getUserByEmail(email).map(user -> user != null)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -100,7 +99,7 @@ public class UserService {
                 .map(user -> user.getSecurityAnswer().equals(securityAnswer));
     }
 
-    public void updatePassword(String email, String newPassword, IFunctionNoParam<Void> onSuccess, IFunction<Throwable, Void> errorHandler) {
+    public void updatePassword(String email, String newPassword, IFunctionNoParam<Void> onSuccess, IFunction<Exception, Void> errorHandler) {
         MaybeObserver<User> subscription = getUserByEmail(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,7 +109,7 @@ public class UserService {
                     @Override
                     public void onSuccess(@NonNull User user) {
                         user.setHashedPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
-                        dbClient.userDao().update(user)
+                        appDatabase.userDao().update(user)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(
                                         new DisposableCompletableObserver() {
@@ -121,7 +120,7 @@ public class UserService {
 
                                             @Override
                                             public void onError(@NonNull Throwable e) {
-                                                errorHandler.apply(e);
+                                                errorHandler.apply((Exception) e);
                                             }
                                         }
                                 );
@@ -129,7 +128,7 @@ public class UserService {
 
                             @Override
                             public void onError(@NonNull Throwable e) {
-                                errorHandler.apply(e);
+                                errorHandler.apply((Exception) e);
                             }
 
                             @Override

@@ -1,19 +1,13 @@
 package com.dmm.ecommerceapp.repositories;
 
 import android.app.Application;
-
-import androidx.lifecycle.LiveData;
-
-
-
-import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
 import com.dmm.ecommerceapp.data.CartItemDao;
-import com.dmm.ecommerceapp.data.EcommerceDatabase;
+import com.dmm.ecommerceapp.db.AppDatabase;
 import com.dmm.ecommerceapp.models.CartItem;
 import com.dmm.ecommerceapp.models.CartItemWithProduct;
 import com.dmm.ecommerceapp.utils.IFunctionNoParam;
@@ -29,7 +23,7 @@ public class CartItemRepository {
 
     // Constructor accepts Application
     public CartItemRepository(Application application) {
-        EcommerceDatabase database = EcommerceDatabase.getInstance(application);
+        AppDatabase database = AppDatabase.getInstance(application);
         cartItemDao = database.cartItemDao();
         allCartItems = cartItemDao.getAllCartItems();
     }
@@ -46,10 +40,10 @@ public class CartItemRepository {
         executorService.execute(() -> {
             try {
                 cartItemDao.insert(cartItem);
-                new Handler(Looper.getMainLooper()).post(() -> onSuccess.apply());
+                new Handler(Looper.getMainLooper()).post(onSuccess::apply);
 
             } catch (Exception e) {
-                new Handler(Looper.getMainLooper()).post(() -> onError.apply());
+                new Handler(Looper.getMainLooper()).post(onError::apply);
             }
         });
     }
@@ -63,6 +57,6 @@ public class CartItemRepository {
     }
 
     public void clearCart() {
-        executorService.execute(() -> cartItemDao.deleteAllCartItems());
+        executorService.execute(cartItemDao::deleteAllCartItems);
     }
 }

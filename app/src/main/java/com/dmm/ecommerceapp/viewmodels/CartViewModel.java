@@ -23,7 +23,6 @@ public class CartViewModel extends AndroidViewModel {
     private final CartItemRepository cartRepository;
     private final SalesRepository salesRepository;
     private final OrderRepository orderRepository;
-    private final SalesRepository salesRepository;
     private final MutableLiveData<List<CartItem>> cartItemsLiveData;
     private final MutableLiveData<Double> cartTotalLiveData;
 
@@ -34,7 +33,6 @@ public class CartViewModel extends AndroidViewModel {
         orderRepository = new OrderRepository(application);
         cartItemsLiveData = new MutableLiveData<>();
         cartTotalLiveData = new MutableLiveData<>(0.0);
-        salesRepository = new SalesRepository(application);
 
         // Load initial data
         loadCartItems();
@@ -114,10 +112,6 @@ public class CartViewModel extends AndroidViewModel {
         calculateCartTotal(new ArrayList<>()); // Reset total price
     }
 
-    public void createNewSale(Sales newOrder) {
-        // Insert the new order into the database
-        salesRepository.insert(newOrder);
-    }
     public void checkout(Order newOrder) {
         // Insert the new order into the database
         orderRepository.insertOrder(newOrder);
@@ -129,5 +123,4 @@ public class CartViewModel extends AndroidViewModel {
         // Insert the new order into the database
         salesRepository.insert(newOrder);
     }
-
 }
